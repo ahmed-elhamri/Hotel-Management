@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Management.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Hotel_Management.Views
         public AdminView()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }

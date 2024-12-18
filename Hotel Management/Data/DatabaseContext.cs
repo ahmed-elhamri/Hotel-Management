@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace Hotel_Management.Data
 {
@@ -38,7 +39,7 @@ namespace Hotel_Management.Data
                     LastName = "admin",
                     PhoneNumber = "0600000000",
                     Email = "admin@hotel.com",
-                    Password = PasswordHasher.HashPassword("Ahmedelhamri@2"), // Replace with hashed password in real apps
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin@123"), // Replace with hashed password in real apps
                     Role = UserRole.Admin
                 }
             );

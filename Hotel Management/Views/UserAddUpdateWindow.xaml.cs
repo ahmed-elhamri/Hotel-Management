@@ -22,7 +22,7 @@ namespace Hotel_Management.Views
     public partial class UserAddUpdateWindow : Window
     {
         private readonly UserDAO _userDAO;
-        private readonly int _userId; // To determine if we're adding or editing
+        private readonly int _userId; 
         private bool _isEditMode;
 
         public UserAddUpdateWindow(int? userId = null)
@@ -30,13 +30,11 @@ namespace Hotel_Management.Views
             InitializeComponent();
             _userDAO = new UserDAO();
 
-            // Check if we're editing an existing user or adding a new one
             if (userId.HasValue)
             {
                 _userId = userId.Value;
                 _isEditMode = true;
 
-                // Load the user details for editing
                 var user = _userDAO.GetUserById(_userId);
                 if (user != null)
                 {
@@ -63,19 +61,17 @@ namespace Hotel_Management.Views
 
             if (_isEditMode)
             {
-                // Update the existing user
                 user.Id = _userId;
                 _userDAO.UpdateUser(user);
                 MessageBox.Show("User updated successfully!");
             }
             else
             {
-                // Add a new user
                 _userDAO.AddUser(user);
                 MessageBox.Show("User added successfully!");
             }
 
-            this.Close(); // Close the window after saving
+            this.Close();
         }
     }
 }

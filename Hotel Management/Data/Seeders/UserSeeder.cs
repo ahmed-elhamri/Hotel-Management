@@ -28,7 +28,7 @@ namespace Hotel_Management.Data.Seeders
                 .RuleFor(user => user.FirstName, f => f.Name.FirstName())
                 .RuleFor(user => user.PhoneNumber, f => f.Phone.PhoneNumber())
                 .RuleFor(user => user.Email, f => f.Internet.Email())
-                .RuleFor(user => user.Password, f => PasswordHasher.HashPassword("DefaultPassword123"))
+                .RuleFor(user => user.Password, f => BCrypt.Net.BCrypt.HashPassword("DefaultPassword123"))
                 .RuleFor(user => user.Role, f => f.PickRandom<UserRole>());
 
             return faker.Generate(count);

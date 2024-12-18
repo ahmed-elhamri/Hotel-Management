@@ -10,8 +10,8 @@ namespace Hotel_Management.Models
     public enum UserRole
     {
         Admin,
-        User,
-        Manager
+        Employe,
+        Client
     }
     public class User
     {

@@ -1,5 +1,6 @@
 ﻿using Hotel_Management.Data;
 using Hotel_Management.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,13 @@ namespace Hotel_Management.DAO
         public User GetUserById(int id)
         {
             return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public User GetUserByLogin(string email, string password)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.Password)) return user;
+            else return null;
         }
 
         public void AddUser(User user)

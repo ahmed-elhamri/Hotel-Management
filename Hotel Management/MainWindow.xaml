@@ -7,14 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid>
-            <DataGrid Name="UserDataGrid" ItemsSource="{Binding Users}" Margin="10" />
-            <Button Content="Add User" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="100" Height="30" Click="AddUserButton_Click"/>
-            <Button Content="Edit User" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" Click="EditUserButton_Click"/>
-        </Grid>
+        
     </Grid>
 </Window>

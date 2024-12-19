@@ -6,7 +6,66 @@
              xmlns:local="clr-namespace:Hotel_Management.Views.Admin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightBlue">
-        <TextBlock Text="Welcome to Employes View!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+    <Grid>
+        <DockPanel LastChildFill="True" Margin="10">
+            <!-- Header -->
+            <Grid DockPanel.Dock="Top" Background="#F5F5F5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="First Name" FontWeight="Bold" Padding="5" Grid.Column="0"/>
+                <TextBlock Text="Last Name" FontWeight="Bold" Padding="5" Grid.Column="1"/>
+                <TextBlock Text="Email" FontWeight="Bold" Padding="5" Grid.Column="2"/>
+                <TextBlock Text="Phone" FontWeight="Bold" Padding="5" Grid.Column="3"/>
+                <TextBlock Text="Actions" FontWeight="Bold" Padding="5" Grid.Column="4"/>
+            </Grid>
+
+            <!-- List of Users -->
+            <ScrollViewer DockPanel.Dock="Top">
+                <ItemsControl ItemsSource="{Binding Users}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding FirstName}" Padding="5" Grid.Column="0"/>
+                                <TextBlock Text="{Binding LastName}" Padding="5" Grid.Column="1"/>
+                                <TextBlock Text="{Binding Email}" Padding="5" Grid.Column="2"/>
+                                <TextBlock Text="{Binding PhoneNumber}" Padding="5" Grid.Column="3"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="4" Margin="5">
+                                    <Button Content="Update" 
+                                            Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" 
+                                            Margin="0,0,5,0"/>
+                                    <Button Content="Delete" 
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <Button Content="Add User" 
+                Command="{Binding AddCommand}" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Margin="10"/>
     </Grid>
 </UserControl>

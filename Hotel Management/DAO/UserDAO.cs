@@ -23,6 +23,16 @@ namespace Hotel_Management.DAO
             return _context.Users.ToList();
         }
 
+        public List<User> GetAllClients()
+        {
+            return _context.Users.Where(u => u.Role == UserRole.Client).ToList();
+        }
+
+        public List<User> GetAllEmployes()
+        {
+            return _context.Users.Where(u => u.Role == UserRole.Employe).ToList();
+        }
+
         public User GetUserById(int id)
         {
             return _context.Users.FirstOrDefault(u => u.Id == id);
@@ -47,9 +57,8 @@ namespace Hotel_Management.DAO
             _context.SaveChanges();
         }
 
-        public void DeleteUser(int id)
+        public void DeleteUser(User user)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user != null)
             {
                 _context.Users.Remove(user);

@@ -50,7 +50,7 @@ namespace Hotel_Management.Views
             }
             else
             {
-                MessageBox.Show("Invalid email or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Invalid email or password. {UserRole.Admin}", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

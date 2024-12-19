@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hotel_Management.Views.Admin
+namespace Hotel_Management.Views.Admin.Reservations
 {
     /// <summary>
-    /// Interaction logic for ListRoomsView.xaml
+    /// Interaction logic for ListReservationsView.xaml
     /// </summary>
-    public partial class ListRoomsView : UserControl
+    public partial class ListReservationsView : UserControl
     {
-        public ListRoomsView()
+        public ListReservationsView()
         {
             InitializeComponent();
         }

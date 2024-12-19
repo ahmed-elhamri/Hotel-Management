@@ -3,6 +3,7 @@ using Hotel_Management.DAO;
 using Hotel_Management.Models;
 using Hotel_Management.Views;
 using Hotel_Management.Views.Admin;
+using Hotel_Management.Views.Admin.Employes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,7 +48,7 @@ namespace Hotel_Management.ViewModels
             // Clear password in the UI
             CurrentUser.Password = string.Empty;
 
-            _currentWindow = new AddUpdateClientWindow { DataContext = this };
+            _currentWindow = new AddUpdateEmployeWindow { DataContext = this };
             _currentWindow.ShowDialog();
         }
 

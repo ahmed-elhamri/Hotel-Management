@@ -1,5 +1,9 @@
 ﻿using Hotel_Management.Commands;
 using Hotel_Management.Views.Admin;
+using Hotel_Management.Views.Admin.Employes;
+using Hotel_Management.Views.Admin.Clients;
+using Hotel_Management.Views.Admin.Reservations;
+using Hotel_Management.Views.Admin.Rooms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

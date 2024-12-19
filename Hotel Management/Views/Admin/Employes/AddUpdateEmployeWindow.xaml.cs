@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Management.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hotel_Management.Views.Admin
+namespace Hotel_Management.Views.Admin.Employes
 {
     /// <summary>
-    /// Interaction logic for ListClientsView.xaml
+    /// Interaction logic for AddUpdateClientWindow.xaml
     /// </summary>
-    public partial class ListClientsView : UserControl
+    public partial class AddUpdateEmployeWindow : Window
     {
-        public ListClientsView()
+        public AddUpdateEmployeWindow()
         {
             InitializeComponent();
+            this.DataContext = new EmployesManagementViewModel();
         }
+
+
     }
 }

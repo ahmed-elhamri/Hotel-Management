@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Management.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hotel_Management.Views.Admin
+namespace Hotel_Management.Views.Admin.Employes
 {
     /// <summary>
-    /// Interaction logic for ListReservationsView.xaml
+    /// Interaction logic for ListEmployesView.xaml
     /// </summary>
-    public partial class ListReservationsView : UserControl
+    public partial class ListEmployesView : UserControl
     {
-        public ListReservationsView()
+        public ListEmployesView()
         {
             InitializeComponent();
+            this.DataContext = new EmployesManagementViewModel(); // Set the DataContext here
+            
         }
     }
+
 }

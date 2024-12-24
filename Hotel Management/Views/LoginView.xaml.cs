@@ -1,5 +1,6 @@
 ﻿using Hotel_Management.DAO;
 using Hotel_Management.Models;
+using Hotel_Management.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +47,19 @@ namespace Hotel_Management.Views
                     var clientView = new ClientView();
                     clientView.Show();
                 }
+
                 this.Close();
             }
             else
             {
                 MessageBox.Show($"Invalid email or password. {UserRole.Admin}", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmailSender.Send("elhamri949@gmail.com", "Teeeeest.");
+
         }
     }
 }

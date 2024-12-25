@@ -11,20 +11,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Hotel_Management.Views.Admin.Rooms
 {
     /// <summary>
-    /// Interaction logic for ListRoomsView.xaml
+    /// Interaction logic for AddUpdateRoomWindow.xaml
     /// </summary>
-    public partial class ListRoomsView : UserControl
+    public partial class AddUpdateRoomWindow : Window
     {
-        public ListRoomsView()
+        public AddUpdateRoomWindow()
         {
             InitializeComponent();
             this.DataContext = new RoomManagementViewModel();
+
         }
     }
 }

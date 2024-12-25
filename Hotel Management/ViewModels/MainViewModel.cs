@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Hotel_Management.Views.Admin.RoomTypes;
 
 namespace Hotel_Management.ViewModels
 {
@@ -51,6 +52,9 @@ namespace Hotel_Management.ViewModels
                     break;
                 case "ListRoomsView":
                     CurrentView = new ListRoomsView();
+                    break;
+                case "ListRoomTypeView":
+                    CurrentView = new ListRoomTypeView();
                     break;
                 case "ListReservationsView":
                     CurrentView = new ListReservationsView();

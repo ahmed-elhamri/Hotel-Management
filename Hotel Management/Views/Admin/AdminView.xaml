@@ -18,8 +18,8 @@
             <Button Content="Employes" Height="50" Margin="5" Command="{Binding NavigateCommand}" CommandParameter="ListEmployesView" />
             <Button Content="Clients" Height="50" Margin="5" Command="{Binding NavigateCommand}" CommandParameter="ListClientsView" />
             <Button Content="Rooms" Height="50" Margin="5" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
+            <Button Content="Room Types" Height="50" Margin="5" Command="{Binding NavigateCommand}" CommandParameter="ListRoomTypeView" />
             <Button Content="Reservations" Height="50" Margin="5" Command="{Binding NavigateCommand}" CommandParameter="ListReservationsView" />
-
         </StackPanel>
 
         <!-- Content Area -->

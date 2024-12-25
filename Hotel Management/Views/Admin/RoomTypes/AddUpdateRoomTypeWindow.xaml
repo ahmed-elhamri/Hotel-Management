@@ -1,0 +1,22 @@
+﻿<Window x:Class="Hotel_Management.Views.Admin.RoomTypes.AddUpdateRoomTypeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hotel_Management.Views.Admin.RoomTypes"
+        mc:Ignorable="d"
+        Title="AddUpdateRoomTypeWindow" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="269*"/>
+            <RowDefinition Height="15*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.RowSpan="2">
+            <Label Content="Name" />
+            <TextBox Text="{Binding CurrentRoomType.Name}" />
+            <Label Content="Description" />
+            <TextBox Text="{Binding CurrentRoomType.Description}" />
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

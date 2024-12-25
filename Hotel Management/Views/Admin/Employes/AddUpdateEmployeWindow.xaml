@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Employes"
         xmlns:behaviors="clr-namespace:Hotel_Management.Behaviors"
         mc:Ignorable="d"
-        Title="AddUpdateEmployeWindow" Height="289" Width="300">
+        Title="AddUpdateEmployeWindow" Width="300">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="269*"/>

@@ -25,6 +25,7 @@ namespace Hotel_Management.DAO
        .Include(r => r.Room)    // Load related Room entity
        .ToList();
 
+
         }
 
         public Reservation GetReservationById(int id)

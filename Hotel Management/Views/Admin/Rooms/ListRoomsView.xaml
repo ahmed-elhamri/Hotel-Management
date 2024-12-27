@@ -3,10 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Rooms"
+             xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Rooms" 
+             xmlns:local1="clr-namespace:Hotel_Management.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightBlue">
-        <TextBlock Text="Welcome to Rooms View!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+    <UserControl.Resources>
+        <local1:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid Background="#f5f5f5">
+            <!-- Header -->
+            <Border Background="#34495e" Height="60" VerticalAlignment="Top">
+                <TextBlock Text="Gestion des Chambres" Foreground="White" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Border>
+
+            <!-- DataGrid Section -->
+            <DataGrid x:Name="roomDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Rooms}"
+              HeadersVisibility="Column" Margin="10,100,10,80" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="Capacité" Binding="{Binding Capacity}" Width="*" />
+                    <DataGridTextColumn Header="Prix" Binding="{Binding Price}" Width="*" />
+                    <DataGridTextColumn Header="Type de Chambre" Binding="{Binding RoomType.Name}" Width="*" />
+                    <DataGridTextColumn Header="Disponibilité" Binding="{Binding IsAvailable, Converter={StaticResource BooleanToYesNoConverter}}" Width="*" />
+                    <DataGridTemplateColumn Header="Opérations" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="✏" Background="#3498db" Foreground="White" Width="30" Height="30"
+                                            ToolTip="Modifier" Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                    <Button Content="❌" Background="#e74c3c" Foreground="White" Width="30" Height="30"
+                                            ToolTip="Supprimer" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Buttons Section -->
+            <Button Content="Ajouter une chambre" HorizontalAlignment="Left" Height="40" Margin="20,10,0,0" Width="160" VerticalAlignment="Top" Background="#2ecc71" Foreground="White" FontWeight="Bold" Command="{Binding AddCommand}" />
+            <Button Content="Retour" Width="160" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,10,0,0" Background="#2ecc71" Foreground="White" Command="{Binding NavigateBackCommand}" />
+        </Grid>
     </Grid>
 </UserControl>

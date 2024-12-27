@@ -14,7 +14,7 @@ namespace Hotel_Management.Data
     class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Room> Room { get; set; }
         public DbSet<RoomType> RoomType { get; set; }
 
         public DbSet<Reservation> Reservation { get; set; }
@@ -22,7 +22,8 @@ namespace Hotel_Management.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql("Server=localhost;Database=hotel_management;User=root;Password=;",
-                new MySqlServerVersion(new Version(8, 0, 27))); // Adjust the MySQL version
+                new MySqlServerVersion(new Version(8, 0, 27)));
+            optionsBuilder.EnableSensitiveDataLogging();// Adjust the MySQL version
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

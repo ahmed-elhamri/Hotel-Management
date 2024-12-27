@@ -17,6 +17,8 @@ namespace Hotel_Management.Data
         public DbSet<Room> Room { get; set; }
         public DbSet<RoomType> RoomType { get; set; }
 
+        public DbSet<Reservation> Reservation { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql("Server=localhost;Database=hotel_management;User=root;Password=;",
@@ -45,18 +47,29 @@ namespace Hotel_Management.Data
                     Password = BCrypt.Net.BCrypt.HashPassword("admin@123"), // Replace with hashed password in real apps
                     Role = UserRole.Admin
                 }
+
             );
+
+            modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.Client)
+            .WithMany()
+            .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Room)
+                .WithMany()
+                .HasForeignKey(r => r.RoomId);
 
             var users = UserSeeder.Seed(25);
             modelBuilder.Entity<User>().HasData(users);
 
-            var rooms = RoomSeeder.Seed(50); 
+            var rooms = RoomSeeder.Seed(50);
             modelBuilder.Entity<Room>().HasData(rooms);
 
             var reservations = ReservationSeeder.Seed(100, 10, 50);
             modelBuilder.Entity<Reservation>().HasData(reservations);
 
-            var payments = PaymentSeeder.Seed(80, 100); 
+            var payments = PaymentSeeder.Seed(80, 100);
             modelBuilder.Entity<Payment>().HasData(payments);
         }
     }

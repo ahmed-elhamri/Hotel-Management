@@ -1,5 +1,4 @@
-﻿using Hotel_Management.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Hotel_Management.Views.Admin.Reservations
 {
     /// <summary>
-    /// Interaction logic for ListReservationsView.xaml
+    /// Interaction logic for AddUpdateReservationWindow.xaml
     /// </summary>
-    public partial class ListReservationsView : UserControl
+    public partial class AddUpdateReservationWindow : Window
     {
-        public ListReservationsView()
+        public AddUpdateReservationWindow()
         {
             InitializeComponent();
-            this.DataContext = new ReservationsManagementViewModel();
-
         }
     }
 }

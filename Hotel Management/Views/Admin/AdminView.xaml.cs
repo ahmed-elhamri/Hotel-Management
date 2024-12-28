@@ -25,5 +25,12 @@ namespace Hotel_Management.Views
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
+        private void Deconnexion_Click(object sender, RoutedEventArgs e)
+        {
+                var loginView = new LoginView();
+                loginView.Show();
+                this.Close();
+        }
     }
 }

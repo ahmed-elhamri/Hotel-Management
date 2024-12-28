@@ -5,13 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Reservations"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightBlue">
-        <Border Background="#34495e" Height="60" VerticalAlignment="Top">
-            <TextBlock Text="Gestion des Réservations" Foreground="White" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Border>
+             d:DesignHeight="500" d:DesignWidth="800">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+
+        <!-- DataGrid Section -->
         <DataGrid x:Name="reservationDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Reservations}"
-                  HeadersVisibility="Column" Margin="10,50,10,10" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+                  HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Reservation ID" Binding="{Binding Id}" Width="Auto" />
                 <DataGridTextColumn Header="Client Name" Binding="{Binding Client.LastName}" Width="*" />
@@ -38,7 +41,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Ajouter une reservations" HorizontalAlignment="Left" Height="40" Margin="20,10,0,0" Width="160" VerticalAlignment="Top" Background="#2ecc71" Foreground="White" FontWeight="Bold" Command="{Binding AddCommand}" />
-        <Button Content="Retour" Width="160" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,10,0,0" Background="#2ecc71" Foreground="White" Command="{Binding NavigateBackCommand}"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
+        <Button Content="➕ Ajouter une reservation" Background="#4CAF50" Foreground="White" FontSize="16"
+         Cursor="Hand" Margin="238,394,237,10" Command="{Binding AddCommand}" />
     </Grid>
 </UserControl>

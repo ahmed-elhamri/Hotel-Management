@@ -27,5 +27,6 @@ namespace Hotel_Management.Views.Admin.Reservations
             this.DataContext = new ReservationsManagementViewModel();
 
         }
+
     }
 }

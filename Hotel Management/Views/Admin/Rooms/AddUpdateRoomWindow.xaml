@@ -3,33 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Rooms"
         mc:Ignorable="d"
-        Title="AddUpdateRoomWindow" Width="300">
-    <Grid Margin="10">
+        Title="Ajouter ou Modifier une Chambre" Width="450" WindowStartupLocation="CenterScreen"
+        Background="#f8f9fa">
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel>
-            <Label Content="Name" />
-            <TextBox Text="{Binding CurrentRoom.Name}" />
 
-            <Label Content="Capacity" />
-            <TextBox Text="{Binding CurrentRoom.Capacity}" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+            <Label Content="Nom :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <TextBox Text="{Binding CurrentRoom.Name}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
-            <Label Content="Price" />
-            <TextBox Text="{Binding CurrentRoom.Price}" />
+            <Label Content="Capacité :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <TextBox Text="{Binding CurrentRoom.Capacity}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
-            <Label Content="Availability" />
-            <CheckBox IsChecked="{Binding CurrentRoom.IsAvailable}" Content="Available" />
+            <Label Content="Prix :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <TextBox Text="{Binding CurrentRoom.Price}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
-            <Label Content="Room Type" />
+            <Label Content="Disponibilité :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <CheckBox IsChecked="{Binding CurrentRoom.IsAvailable}" Content="Disponible" FontSize="14" Margin="0,5" HorizontalAlignment="Left"/>
+
+            <Label Content="Type de Chambre :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
             <ComboBox ItemsSource="{Binding RoomTypes}"
                       SelectedItem="{Binding CurrentRoom.RoomType, Mode=TwoWay}" 
-                      DisplayMemberPath="Name" />
+                      DisplayMemberPath="Name"
+                      FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0,10,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+                <Button Content="Annuler" Command="{Binding CancelCommand}" Width="120" Height="40" Background="#e74c3c" Foreground="White" FontWeight="Bold" Margin="5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

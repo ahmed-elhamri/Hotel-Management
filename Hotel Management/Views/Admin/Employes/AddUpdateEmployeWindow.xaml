@@ -3,27 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Employes"
         xmlns:behaviors="clr-namespace:Hotel_Management.Behaviors"
         mc:Ignorable="d"
-        Title="AddUpdateEmployeWindow" Width="300">
-    <Grid Margin="10">
+        Title="Add or Update Employee" Width="450" WindowStartupLocation="CenterScreen"
+        Background="#f8f9fa">
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="269*"/>
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2">
-            <Label Content="First Name" />
-            <TextBox Text="{Binding CurrentUser.FirstName}" />
-            <Label Content="Last Name" />
-            <TextBox Text="{Binding CurrentUser.LastName}" />
-            <Label Content="Email" />
-            <TextBox Text="{Binding CurrentUser.Email}" />
-            <Label Content="Phone" />
-            <TextBox Text="{Binding CurrentUser.PhoneNumber}" />
-            <Label Content="Password" />
-            <PasswordBox behaviors:PasswordBoxBehavior.Password="{Binding CurrentUser.Password, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0,10,0,0"/>
+
+        <!-- Form Section -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" Height="285" >
+            <!-- First Name -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Prénom :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding CurrentUser.FirstName}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Last Name -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Nom :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding CurrentUser.LastName}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Email -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Email:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding CurrentUser.Email}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Phone -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Téléphone:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding CurrentUser.PhoneNumber}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Password -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Password:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <PasswordBox behaviors:PasswordBoxBehavior.Password="{Binding CurrentUser.Password, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30">
+                <Button Content="Enregister" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

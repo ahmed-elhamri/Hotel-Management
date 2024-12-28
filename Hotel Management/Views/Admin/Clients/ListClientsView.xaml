@@ -6,7 +6,18 @@
              xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Clients"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightBlue">
-        <TextBlock Text="Welcome to Clients View!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Main Content Area -->
+        <Border Grid.Row="1">
+            <TextBlock Text="Client list content goes here" 
+                     VerticalAlignment="Center" 
+                     HorizontalAlignment="Center"
+                     FontSize="16" />
+        </Border>
     </Grid>
 </UserControl>

@@ -26,5 +26,6 @@ namespace Hotel_Management.Views.Admin.Rooms
             InitializeComponent();
             this.DataContext = new RoomManagementViewModel();
         }
+
     }
 }

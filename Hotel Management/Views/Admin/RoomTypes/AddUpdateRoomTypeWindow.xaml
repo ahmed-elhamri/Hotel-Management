@@ -3,20 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hotel_Management.Views.Admin.RoomTypes"
         mc:Ignorable="d"
-        Title="AddUpdateRoomTypeWindow" Width="300">
-    <Grid Margin="10">
+        Title="Ajouter ou Modifier un Type de Chambre" Width="450" WindowStartupLocation="CenterScreen"
+        Background="#f8f9fa" d:DesignHeight="289.04">
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="269*"/>
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2">
-            <Label Content="Name" />
-            <TextBox Text="{Binding CurrentRoomType.Name}" />
-            <Label Content="Description" />
-            <TextBox Text="{Binding CurrentRoomType.Description}" />
-            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0,10,0,0"/>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="300">
+            <!-- Nom du type de chambre -->
+            <Label Content="Nom :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <TextBox Text="{Binding CurrentRoomType.Name}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
+
+            <!-- Description du type de chambre -->
+            <Label Content="Description :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+            <TextBox Text="{Binding CurrentRoomType.Description}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
+
+            <!-- Boutons de sauvegarde et d'annulation -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+                <Button Content="Annuler" Command="{Binding CancelCommand}" Width="120" Height="40" Background="#e74c3c" Foreground="White" FontWeight="Bold" Margin="5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

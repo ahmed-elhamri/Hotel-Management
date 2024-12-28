@@ -1,11 +1,6 @@
 ﻿using Hotel_Management.Data;
 using Hotel_Management.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hotel_Management.DAO
 {
@@ -13,7 +8,7 @@ namespace Hotel_Management.DAO
     {
         private readonly DatabaseContext _context;
 
-       public ReservationDAO()
+        public ReservationDAO()
         {
             _context = new DatabaseContext();
         }
@@ -21,38 +16,101 @@ namespace Hotel_Management.DAO
         public List<Reservation> GetAllReservations()
         {
             return _context.Reservation
-       .Include(r => r.Client)  // Load related User entity
-       .Include(r => r.Room)    // Load related Room entity
-       .ToList();
-
-
+                .Include(r => r.Client)
+                .Include(r => r.Room)
+                .ToList();
         }
 
         public Reservation GetReservationById(int id)
         {
-            return _context.Reservation.FirstOrDefault(u => u.Id == id);
+            return _context.Reservation
+                .Include(r => r.Client)
+                .Include(r => r.Room)
+                .FirstOrDefault(u => u.Id == id);
         }
 
         public void UpdateReservation(Reservation reservation)
         {
-            _context.Reservation.Update(reservation);
-            _context.SaveChanges();
+            try
+            {
+                using (var newContext = new DatabaseContext())
+                {
+                    
+                    var existingReservation = newContext.Reservation
+                        .Include(r => r.Client)
+                        .Include(r => r.Room)
+                        .FirstOrDefault(r => r.Id == reservation.Id);
+
+                    if (existingReservation != null)
+                    {
+                       
+                        existingReservation.UserId = reservation.Client.Id;
+                        existingReservation.RoomId = reservation.Room.Id;
+                        existingReservation.CheckInDate = reservation.CheckInDate;
+                        existingReservation.CheckOutDate = reservation.CheckOutDate;
+                        existingReservation.TotalPrice = reservation.TotalPrice;
+                        existingReservation.Status = reservation.Status;
+
+                        newContext.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating reservation: {ex.Message}", ex);
+            }
         }
+
+        public void AddReservation(Reservation reservation)
+        {
+            try
+            {
+                
+                var newReservation = new Reservation
+                {
+                    UserId = reservation.Client.Id,
+                    RoomId = reservation.Room.Id,
+                    CheckInDate = reservation.CheckInDate,
+                    CheckOutDate = reservation.CheckOutDate,
+                    TotalPrice = reservation.TotalPrice,
+                    Status = reservation.Status
+                };
+
+                _context.Reservation.Add(newReservation);
+                _context.SaveChanges();
+
+                
+                reservation.Id = newReservation.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding reservation: {ex.Message}", ex);
+            }
+        }
+
 
         public void DeleteReservation(Reservation reservation)
         {
-            if (reservation != null)
+            try
             {
-                _context.Reservation.Remove(reservation);
-                _context.SaveChanges();
+                if (reservation != null)
+                {
+                    
+                    _context.ChangeTracker.Clear();
+
+                    
+                    var reservationToDelete = _context.Reservation.Find(reservation.Id);
+                    if (reservationToDelete != null)
+                    {
+                        _context.Reservation.Remove(reservationToDelete);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error deleting reservation: {ex.Message}", ex);
             }
         }
-        public void AddReservation(Reservation reservation)
-        {
-            _context.Reservation.Add(reservation);
-            _context.SaveChanges();
-        }
-
-
     }
 }

@@ -21,6 +21,20 @@ namespace Hotel_Management.ViewModels
         private Window _currentWindow;
         private string _tempPassword;
 
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                //OnPropertyChanged(nameof(SearchQuery));
+                FilterUsers(); // Automatically filter when the query changes
+            }
+        }
+
+        public ObservableCollection<User> FilteredUsers { get; set; }
+
         public ObservableCollection<User> Users { get; set; }
         public User CurrentUser { get; set; }
 
@@ -33,7 +47,7 @@ namespace Hotel_Management.ViewModels
         {
             _userDao = new UserDAO();
             Users = new ObservableCollection<User>(_userDao.GetAllEmployes());
-
+            FilteredUsers = new ObservableCollection<User>(Users);
             AddCommand = new RelayCommand(_ => OpenPopup(new User()));
             UpdateCommand = new RelayCommand(user => OpenPopup((User)user));
             DeleteCommand = new RelayCommand(user => DeleteUser((User)user));
@@ -58,8 +72,63 @@ namespace Hotel_Management.ViewModels
             Users.Remove(user);
         }
 
+        private void FilterUsers()
+        {
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                FilteredUsers.Clear();
+                foreach (var user in Users)
+                    FilteredUsers.Add(user);
+            }
+            else
+            {
+                var filtered = Users.Where(u =>
+                    u.LastName != null && u.LastName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+
+                FilteredUsers.Clear();
+                foreach (var user in filtered)
+                    FilteredUsers.Add(user);
+            }
+        }
+
         private void SaveUser()
         {
+            if (string.IsNullOrWhiteSpace(CurrentUser.FirstName))
+            {
+                MessageBox.Show("Le prénom est obligatoire.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(CurrentUser.LastName))
+            {
+                MessageBox.Show("Le nom est obligatoire.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(CurrentUser.Email) || !IsValidEmail(CurrentUser.Email))
+            {
+                MessageBox.Show("Veuillez entrer une adresse email valide.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(CurrentUser.PhoneNumber) || !IsValidPhone(CurrentUser.PhoneNumber))
+            {
+                MessageBox.Show("Veuillez entrer un numéro de téléphone valide.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(CurrentUser.Password) && CurrentUser.Id == 0) // Check for password only on new users
+            {
+                MessageBox.Show("Le mot de passe est obligatoire.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (CurrentUser.Password.Length < 6 && CurrentUser.Id == 0) // Check length only on new passwords
+            {
+                MessageBox.Show("Le mot de passe doit contenir au moins 6 caractères.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             // Only hash password if it's not empty
             if (!string.IsNullOrEmpty(CurrentUser.Password))
             {
@@ -86,6 +155,24 @@ namespace Hotel_Management.ViewModels
             }
 
             _currentWindow?.Close();
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool IsValidPhone(string phoneNumber)
+        {
+            return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 10; // Adjust length if needed
         }
     }
 }

@@ -25,7 +25,7 @@
         <!-- DataGrid Section -->
         <DataGrid x:Name="paiementDataGrid" Grid.Row="0" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Payments}"
                   HeadersVisibility="Column" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal"
-                  RowHeight="35" BorderThickness="0" Background="White" Margin="10">
+                  RowHeight="35" BorderThickness="0" Background="White" Margin="10,10,10,67">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date de Paiement" Binding="{Binding PaymentDate}" Width="*" />
                 <DataGridTextColumn Header="Montant" Binding="{Binding Amount}" Width="*" />
@@ -53,6 +53,6 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
         <Button Content="➕ Ajouter un paiement" Background="#4CAF50" Foreground="White" FontSize="16"
-                Cursor="Hand" Margin="238,12,238,12" Command="{Binding AddCommand}" Grid.Row="1" />
+                Cursor="Hand" Margin="210,406,208,10" Command="{Binding AddCommand}" />
     </Grid>
 </UserControl>

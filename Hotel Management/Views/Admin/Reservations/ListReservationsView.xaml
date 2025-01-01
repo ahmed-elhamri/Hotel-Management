@@ -12,6 +12,7 @@
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
 
+
         <!-- DataGrid Section -->
         <DataGrid x:Name="reservationDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Reservations}"
                   HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
@@ -41,9 +42,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
         <Button Content="➕ Ajouter une reservation" Background="#4CAF50" Foreground="White" FontSize="16"
-         Cursor="Hand" Margin="238,394,237,10" Command="{Binding AddCommand}" />
+         Cursor="Hand" Margin="238,400,217,10" Command="{Binding AddCommand}" />
+        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
     </Grid>
 </UserControl>

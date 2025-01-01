@@ -44,6 +44,8 @@
         </DataGrid>
 
         <Button Content="➕ Ajouter un employé" Background="#4CAF50" Foreground="White" FontSize="16"
-            Cursor="Hand" Margin="238,394,237,10" Command="{Binding AddCommand}" />
+            Cursor="Hand" Margin="238,400,217,10" Command="{Binding AddCommand}" />
+        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
+
     </Grid>
 </UserControl>

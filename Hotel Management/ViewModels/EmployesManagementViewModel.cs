@@ -42,6 +42,8 @@ namespace Hotel_Management.ViewModels
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
+
 
         public EmployesManagementViewModel()
         {
@@ -52,6 +54,7 @@ namespace Hotel_Management.ViewModels
             UpdateCommand = new RelayCommand(user => OpenPopup((User)user));
             DeleteCommand = new RelayCommand(user => DeleteUser((User)user));
             SaveCommand = new RelayCommand(_ => SaveUser());
+            ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
         }
 
         private void OpenPopup(User user)
@@ -89,6 +92,21 @@ namespace Hotel_Management.ViewModels
                 FilteredUsers.Clear();
                 foreach (var user in filtered)
                     FilteredUsers.Add(user);
+            }
+        }
+
+        private void ExportToExcel()
+        {
+            try
+            {
+                _userDao.ExportExcel(Users.ToList());
+                MessageBox.Show("Excel file exported successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

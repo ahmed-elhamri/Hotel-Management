@@ -48,7 +48,8 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
         <Button Content="➕ Ajouter une chambre" Background="#4CAF50" Foreground="White" FontSize="16"
-        Cursor="Hand" Margin="238,394,237,10" Command="{Binding AddCommand}" />
+        Cursor="Hand" Margin="238,400,237,10" Command="{Binding AddCommand}" />
+        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
 
     </Grid>
 </UserControl>

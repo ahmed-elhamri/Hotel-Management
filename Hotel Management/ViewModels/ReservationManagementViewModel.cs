@@ -29,6 +29,7 @@ namespace Hotel_Management.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
 
         public ReservationsManagementViewModel()
         {
@@ -46,6 +47,8 @@ namespace Hotel_Management.ViewModels
             AddCommand = new RelayCommand(_ => OpenPopup(new Reservation()));
             SaveCommand = new RelayCommand(_ => SaveReservation());
             CancelCommand = new RelayCommand(_ => _currentWindow?.Close());
+            ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
+
         }
 
         private void LoadData()
@@ -147,6 +150,21 @@ namespace Hotel_Management.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show($"Error saving reservation: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ExportToExcel()
+        {
+            try
+            {
+                _reservationDao.ExportExcel(Reservations.ToList());
+                MessageBox.Show("Excel file exported successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

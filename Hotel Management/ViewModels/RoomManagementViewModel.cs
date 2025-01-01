@@ -28,6 +28,7 @@ namespace Hotel_Management.ViewModels
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
 
         public RoomManagementViewModel()
         {
@@ -42,6 +43,7 @@ namespace Hotel_Management.ViewModels
             UpdateCommand = new RelayCommand(room => OpenPopup((Room)room));
             DeleteCommand = new RelayCommand(room => DeleteRoom((Room)room));
             SaveCommand = new RelayCommand(_ => SaveRoom());
+            ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
         }
 
         private void OpenPopup(Room room)
@@ -72,6 +74,21 @@ namespace Hotel_Management.ViewModels
             }
 
             _currentWindow?.Close();
+        }
+
+        private void ExportToExcel()
+        {
+            try
+            {
+                _roomDao.ExportExcel(Rooms.ToList());
+                MessageBox.Show("Excel file exported successfully!", "Success",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 

@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hotel_Management.Views"
         mc:Ignorable="d"
-        Title="Hotel Management" Width="900" WindowStartupLocation="CenterScreen" Background="#F3F4F6" d:DesignHeight="551.66">
+        Title="Hotel Management" Width="900" WindowStartupLocation="CenterScreen"
+        Background="#F3F4F6" d:DesignHeight="551.66" Height="600"
+        ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />

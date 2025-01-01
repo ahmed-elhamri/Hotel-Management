@@ -1,0 +1,62 @@
+﻿<Window x:Class="Hotel_Management.Views.Admin.Paiement.AddUpdatePaiementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Ajouter/Mettre à jour un paiement" Height="450" Width="439">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Formulaire principal -->
+        <StackPanel VerticalAlignment="Top" Grid.Row="0" Margin="0,5">
+            <!-- Réservation -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Réservation :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <ComboBox x:Name="ReservationComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250" />
+            </StackPanel>
+
+            <!-- Date de paiement -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Date de paiement :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <DatePicker x:Name="DatePaiementPicker" FontSize="14" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Montant -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Montant :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <TextBox x:Name="MontantTextBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+            </StackPanel>
+
+            <!-- Méthode de paiement -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Méthode :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <ComboBox x:Name="MethodePaiementComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250">
+                    <ComboBoxItem Content="Carte bancaire" />
+                    <ComboBoxItem Content="Espèces" />
+                    <ComboBoxItem Content="Chèque" />
+                    <ComboBoxItem Content="Virement bancaire" />
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Statut -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Statut :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <ComboBox x:Name="StatutComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250">
+                    <ComboBoxItem Content="Payé" />
+                    <ComboBoxItem Content="En attente" />
+                    <ComboBoxItem Content="Annulé" />
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Boutons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,30">
+            <Button Content="Ajouter" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5" Click="AjouterButton_Click"/>
+            <Button Content="Annuler" Width="120" Height="40" Background="#e74c3c" Foreground="White" FontWeight="Bold" Margin="5" Click="AnnulerButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,5 +1,4 @@
-﻿using Hotel_Management.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hotel_Management.Views.Admin.Rooms
+namespace Hotel_Management.Views.Admin.Paiement
 {
     /// <summary>
-    /// Interaction logic for ListRoomsView.xaml
+    /// Logique d'interaction pour AddUpdatePaiementWindow.xaml
     /// </summary>
-    public partial class ListRoomsView : UserControl
+    public partial class AddUpdatePaiementWindow : Window
     {
-        public ListRoomsView()
+        public AddUpdatePaiementWindow()
         {
             InitializeComponent();
-            this.DataContext = new PaiementManagementViewModel();
         }
-
     }
 }

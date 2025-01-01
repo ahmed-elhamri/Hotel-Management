@@ -23,7 +23,7 @@ namespace Hotel_Management.Views.Admin.Rooms
         public AddUpdateRoomWindow()
         {
             InitializeComponent();
-            this.DataContext = new RoomManagementViewModel();
+            this.DataContext = new PaiementManagementViewModel();
 
         }
     }

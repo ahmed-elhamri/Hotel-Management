@@ -15,7 +15,7 @@ namespace Hotel_Management.ViewModels
     {
         private readonly ReservationDAO _reservationDao;
         private readonly UserDAO _userDao;
-        private readonly RoomDAO _roomDao;
+        private readonly PaiementDAO _roomDao;
         private Window _currentWindow;
 
         public ObservableCollection<Reservation> Reservations { get; set; }
@@ -35,7 +35,7 @@ namespace Hotel_Management.ViewModels
             
             _reservationDao = new ReservationDAO();
             _userDao = new UserDAO();
-            _roomDao = new RoomDAO();
+            _roomDao = new PaiementDAO();
 
             
             LoadData();

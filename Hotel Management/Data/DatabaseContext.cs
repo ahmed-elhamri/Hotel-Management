@@ -19,6 +19,9 @@ namespace Hotel_Management.Data
 
         public DbSet<Reservation> Reservation { get; set; }
 
+        public DbSet<Payment> Payment { get; set; }
+       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql("Server=localhost;Database=hotel_management;User=root;Password=;",

@@ -11,17 +11,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hotel_Management.Views.Admin.Rooms
+namespace Hotel_Management.Views.Admin.Paiement
 {
     /// <summary>
-    /// Interaction logic for ListRoomsView.xaml
+    /// Logique d'interaction pour ListPaiementView.xaml
     /// </summary>
-    public partial class ListRoomsView : UserControl
+    public partial class ListPaiementView : Window
     {
-        public ListRoomsView()
+        public ListPaiementView()
         {
             InitializeComponent();
             this.DataContext = new PaiementManagementViewModel();

@@ -31,26 +31,35 @@ namespace Hotel_Management.DAO
 
         public void AddPaiement(Payment paiement)
         {
-            // Only set the foreign key, not the navigation property
-            paiement.ReservationId = paiement.Reservation?.Id ?? 0;
-            paiement.Reservation = null;  // Clear the navigation property
-
-            _context.Payment.Add(paiement);
-            _context.SaveChanges();
+            using (var context = new DatabaseContext())
+            {
+                var cleanPayment = new Payment
+                {
+                    ReservationId = paiement.ReservationId,
+                    PaymentDate = paiement.PaymentDate,
+                    Amount = paiement.Amount,
+                    PaymentMethod = paiement.PaymentMethod,
+                    Status = paiement.Status
+                };
+                context.Payment.Add(cleanPayment);
+                context.SaveChanges();
+            }
         }
 
         public void UpdatePaiement(Payment paiement)
         {
-            var existingPaiement = _context.Payment.Find(paiement.Id);
-            if (existingPaiement != null)
+            using (var context = new DatabaseContext())
             {
-                existingPaiement.ReservationId = paiement.Reservation?.Id ?? 0;
-                existingPaiement.PaymentDate = paiement.PaymentDate;
-                existingPaiement.Amount = paiement.Amount;
-                existingPaiement.PaymentMethod = paiement.PaymentMethod;
-                existingPaiement.Status = paiement.Status;
-
-                _context.SaveChanges();
+                var existingPayment = context.Payment.Find(paiement.Id);
+                if (existingPayment != null)
+                {
+                    existingPayment.ReservationId = paiement.ReservationId;
+                    existingPayment.PaymentDate = paiement.PaymentDate;
+                    existingPayment.Amount = paiement.Amount;
+                    existingPayment.PaymentMethod = paiement.PaymentMethod;
+                    existingPayment.Status = paiement.Status;
+                    context.SaveChanges();
+                }
             }
         }
 

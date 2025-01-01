@@ -19,6 +19,8 @@ namespace Hotel_Management.ViewModels
 
         public ObservableCollection<Payment> Payments { get; set; }
         public ObservableCollection<Reservation> Reservations { get; set; }
+        public ObservableCollection<PMethod> PaymentMethods { get; set; }
+        public ObservableCollection<PaymentStatus> PaymentStatuses { get; set; }
 
         private Payment _currentPaiement;
         public Payment CurrentPaiement
@@ -59,7 +61,11 @@ namespace Hotel_Management.ViewModels
 
             LoadData();
 
-            // Initialize commands
+            // Charger les énumérations
+            PaymentMethods = new ObservableCollection<PMethod>((PMethod[])Enum.GetValues(typeof(PMethod)));
+            PaymentStatuses = new ObservableCollection<PaymentStatus>((PaymentStatus[])Enum.GetValues(typeof(PaymentStatus)));
+
+            // Initialiser les commandes
             AddCommand = new RelayCommand(_ => OpenPopup(new Payment()));
             UpdateCommand = new RelayCommand(paiement => OpenPopup((Payment)paiement));
             DeleteCommand = new RelayCommand(paiement => DeletePaiement((Payment)paiement));
@@ -68,21 +74,35 @@ namespace Hotel_Management.ViewModels
 
         private void OpenPopup(Payment paiement)
         {
-            // Créer un nouveau paiement avec des valeurs par défaut
-            CurrentPaiement = new Payment
+            if (paiement.Id == 0) // Nouveau paiement
             {
-                Id = paiement.Id,
-                PaymentDate = DateTime.Now,
-                Amount = 10,
-                PaymentMethod = PMethod.Cash,
-                Status = PaymentStatus.Pending
-            };
+                CurrentPaiement = new Payment
+                {
+                    PaymentDate = DateTime.Now,
+                    Amount = 0,
+                    PaymentMethod = PMethod.Cash,
+                    Status = PaymentStatus.Pending
+                };
 
-            // Sélectionner la première réservation par défaut
-            if (Reservations.Any())
+                if (Reservations.Any())
+                {
+                    SelectedReservation = Reservations.First();
+                    CurrentPaiement.ReservationId = SelectedReservation.Id;
+                }
+            }
+            else // Modification
             {
-                SelectedReservation = Reservations.First();
-                CurrentPaiement.ReservationId = SelectedReservation.Id;
+                CurrentPaiement = new Payment
+                {
+                    Id = paiement.Id,
+                    ReservationId = paiement.ReservationId,
+                    PaymentDate = paiement.PaymentDate,
+                    Amount = paiement.Amount,
+                    PaymentMethod = paiement.PaymentMethod,
+                    Status = paiement.Status
+                };
+
+                SelectedReservation = Reservations.FirstOrDefault(r => r.Id == paiement.ReservationId);
             }
 
             _currentWindow = new AddUpdatePaiementWindow { DataContext = this };
@@ -108,7 +128,6 @@ namespace Hotel_Management.ViewModels
             {
                 if (SelectedReservation == null)
                 {
-                    MessageBox.Show("POPO " +SelectedReservation);
                     throw new InvalidOperationException("Veuillez sélectionner une réservation valide.");
                 }
 
@@ -118,7 +137,7 @@ namespace Hotel_Management.ViewModels
                 }
 
                 CurrentPaiement.ReservationId = SelectedReservation.Id;
-                CurrentPaiement.Reservation = null; // Important : nettoyer la référence de navigation
+                CurrentPaiement.Reservation = null;
 
                 if (CurrentPaiement.Id == 0)
                 {
@@ -129,8 +148,12 @@ namespace Hotel_Management.ViewModels
                     _paiementDAO.UpdatePaiement(CurrentPaiement);
                 }
 
-                LoadData();
                 _currentWindow?.Close();
+
+                // Rafraîchir la liste
+                var newPayments = _paiementDAO.GetAllPaiement();
+                Payments = new ObservableCollection<Payment>(newPayments);
+                OnPropertyChanged(nameof(Payments));
             }
             catch (Exception ex)
             {

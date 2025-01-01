@@ -17,7 +17,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Réservation :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
                 <ComboBox x:Name="ReservationComboBox" ItemsSource="{Binding Reservations}"
-                          SelectedItem="{Binding CurrentReservation.Id}"
+                          SelectedItem="{Binding SelectedReservation}"
                           DisplayMemberPath="Id"
                           FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
@@ -25,34 +25,31 @@
             <!-- Date de paiement -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Date de paiement :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <DatePicker x:Name="DatePaiementPicker" FontSize="14" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+                <DatePicker x:Name="DatePaiementPicker" SelectedDate="{Binding CurrentPaiement.PaymentDate}"
+                            FontSize="14" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
 
             <!-- Montant -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Montant :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <TextBox x:Name="MontantTextBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+                <TextBox x:Name="MontantTextBox" Text="{Binding CurrentPaiement.Amount}"
+                         FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
 
             <!-- Méthode de paiement -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Méthode :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <ComboBox x:Name="MethodePaiementComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250">
-                    <ComboBoxItem Content="Carte bancaire" />
-                    <ComboBoxItem Content="Espèces" />
-                    <ComboBoxItem Content="Chèque" />
-                    <ComboBoxItem Content="Virement bancaire" />
-                </ComboBox>
+                <ComboBox x:Name="MethodePaiementComboBox" ItemsSource="{Binding PaymentMethods}"
+                          SelectedItem="{Binding CurrentPaiement.PaymentMethod}"
+                          FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
 
             <!-- Statut -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Statut :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <ComboBox x:Name="StatutComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250">
-                    <ComboBoxItem Content="Payé" />
-                    <ComboBoxItem Content="En attente" />
-                    <ComboBoxItem Content="Annulé" />
-                </ComboBox>
+                <ComboBox x:Name="StatutComboBox" ItemsSource="{Binding PaymentStatuses}"
+                          SelectedItem="{Binding CurrentPaiement.Status}"
+                          FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
         </StackPanel>
 

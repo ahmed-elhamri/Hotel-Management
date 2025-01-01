@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Management.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,12 @@ namespace Hotel_Management.Views.Admin.Paiements
     /// <summary>
     /// Logique d'interaction pour ListPaiementView.xaml
     /// </summary>
-    public partial class ListPaiementView : Window
+    public partial class ListPaiementView : UserControl
     {
         public ListPaiementView()
         {
             InitializeComponent();
+            this.DataContext = new PaiementManagementViewModel();
         }
     }
 }

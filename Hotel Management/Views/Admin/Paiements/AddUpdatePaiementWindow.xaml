@@ -16,7 +16,10 @@
             <!-- Réservation -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Réservation :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <ComboBox x:Name="ReservationComboBox" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250" />
+                <ComboBox x:Name="ReservationComboBox" ItemsSource="{Binding Reservations}"
+                          SelectedItem="{Binding CurrentReservation.Id}"
+                          DisplayMemberPath="Id"
+                          FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
 
             <!-- Date de paiement -->

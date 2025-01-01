@@ -11,17 +11,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Hotel_Management.Views.Admin.Clients
 {
     /// <summary>
-    /// Interaction logic for ListClientsView.xaml
+    /// Interaction logic for AddUpdateClientsWindow.xaml
     /// </summary>
-    public partial class ListClientsView : UserControl
+    public partial class AddUpdateClientsWindow : Window
     {
-        public ListClientsView()
+        public AddUpdateClientsWindow()
         {
             InitializeComponent();
             this.DataContext = new ClientsManagementViewModel();

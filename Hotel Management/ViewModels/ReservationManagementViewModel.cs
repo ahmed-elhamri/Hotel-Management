@@ -125,8 +125,21 @@ namespace Hotel_Management.ViewModels
                 {
                     _reservationDao.AddReservation(CurrentReservation);
                     Reservations.Add(CurrentReservation);
+
                     MessageBox.Show("Reservation added successfully!", "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    try
+                    {
+                        _reservationDao.ExportReservationToPdf(CurrentReservation);
+                    }
+                    catch (Exception pdfEx)
+                    {
+                        MessageBox.Show($"Reservation was saved but there was an error generating the PDF: {pdfEx.Message}",
+                            "PDF Generation Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+                    }
                 }
                 else
                 {

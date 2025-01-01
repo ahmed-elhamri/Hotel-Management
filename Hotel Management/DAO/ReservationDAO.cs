@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using OfficeOpenXml;
 using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using Microsoft.Win32;
 
 namespace Hotel_Management.DAO
 {
@@ -180,6 +184,78 @@ namespace Hotel_Management.DAO
             catch (Exception ex)
             {
                 throw new Exception($"Error deleting reservation: {ex.Message}", ex);
+            }
+        }
+
+        public void ExportReservationToPdf(Reservation reservation)
+        {
+            try
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PDF Files (*.pdf)|*.pdf",
+                    DefaultExt = "pdf",
+                    FileName = $"Booking_Voucher_{reservation.Id}_{DateTime.Now:yyyyMMdd}"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                    {
+                        Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+                        PdfWriter writer = PdfWriter.GetInstance(document, fs);
+
+                        document.Open();
+
+                        // Add hotel logo/header
+                        document.Add(new Paragraph("HOTEL MANAGEMENT SYSTEM"));
+                        document.Add(new Paragraph("Booking Voucher") { Alignment = Element.ALIGN_CENTER });
+                        document.Add(new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator())));
+                        document.Add(new Paragraph("\n"));
+
+                        // Reservation details
+                        document.Add(new Paragraph($"Booking Reference: #{reservation.Id}"));
+                        document.Add(new Paragraph($"Date: {DateTime.Now:dd/MM/yyyy}"));
+                        document.Add(new Paragraph("\n"));
+
+                        // Guest Information
+                        document.Add(new Paragraph("Guest Information", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                        document.Add(new Paragraph($"Name: {reservation.Client.FirstName} {reservation.Client.LastName}"));
+                        document.Add(new Paragraph($"Email: {reservation.Client.Email}"));
+                        document.Add(new Paragraph($"Phone: {reservation.Client.PhoneNumber}"));
+                        document.Add(new Paragraph("\n"));
+
+                        // Booking Details
+                        document.Add(new Paragraph("Booking Details", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                        document.Add(new Paragraph($"Check-in Date: {reservation.CheckInDate:dd/MM/yyyy}"));
+                        document.Add(new Paragraph($"Check-out Date: {reservation.CheckOutDate:dd/MM/yyyy}"));
+                        document.Add(new Paragraph($"Number of Nights: {(reservation.CheckOutDate - reservation.CheckInDate).Days}"));
+                        document.Add(new Paragraph("\n"));
+
+                        // Room Details
+                        document.Add(new Paragraph("Room Information", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                        document.Add(new Paragraph($"Room Number: {reservation.Room.Id}"));
+                        document.Add(new Paragraph($"Room Type: {reservation.Room.RoomType?.Name ?? "Standard"}"));
+                        document.Add(new Paragraph("\n"));
+
+                        // Payment Details
+                        document.Add(new Paragraph("Payment Information", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                        document.Add(new Paragraph($"Total Amount: ${reservation.TotalPrice:F2}"));
+                        document.Add(new Paragraph("\n"));
+
+                        // Terms and Conditions
+                        document.Add(new Paragraph("Terms and Conditions", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                        document.Add(new Paragraph("1. Check-in time is 2:00 PM and check-out time is 12:00 PM."));
+                        document.Add(new Paragraph("2. Please present this voucher at check-in."));
+                        document.Add(new Paragraph("3. Early check-in and late check-out are subject to availability."));
+
+                        document.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error generating PDF: {ex.Message}", ex);
             }
         }
     }

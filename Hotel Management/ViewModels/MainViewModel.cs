@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Hotel_Management.Views.Admin.RoomTypes;
 
+
 namespace Hotel_Management.ViewModels
 {
     internal class MainViewModel : INotifyPropertyChanged
@@ -59,6 +60,7 @@ namespace Hotel_Management.ViewModels
                 case "ListReservationsView":
                     CurrentView = new ListReservationsView();
                     break;
+                
             }
         }
 

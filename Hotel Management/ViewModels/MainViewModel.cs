@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Hotel_Management.Views.Admin.RoomTypes;
+using Hotel_Management.Views.Admin.Paiements;
 
 namespace Hotel_Management.ViewModels
 {
@@ -55,6 +56,9 @@ namespace Hotel_Management.ViewModels
                     break;
                 case "ListRoomTypeView":
                     CurrentView = new ListRoomTypeView();
+                    break;
+                case "ListPaiementView":
+                    CurrentView = new ListPaiementView();
                     break;
                 case "ListReservationsView":
                     CurrentView = new ListReservationsView();

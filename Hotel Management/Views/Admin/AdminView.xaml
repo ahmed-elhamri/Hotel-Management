@@ -37,7 +37,7 @@
                     <Button x:Name="ListEmployesBtn" Content="👤 Liste des Employes" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListEmployesView" />
                     <Button x:Name="ListRoomsBtn" Content="🏢 Liste des Chambres" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
                     <Button x:Name="ListRoomTypeBtn" Content="🏷️ Liste des Catégories" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomTypeView"/>
-                    <Button x:Name="ListPaymentBtn" Content="💳 Liste des Paiements" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" />
+                    <Button x:Name="ListPaymentBtn" Content="💳 Liste des Paiements" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListPaiementView" />
                     <Button x:Name="ListReservationsBtn" Content="📅 Liste des Réservations" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListReservationsView"/>
                     <Button Content="🚪 Déconnexion" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Click="Deconnexion_Click" />
                 </StackPanel>

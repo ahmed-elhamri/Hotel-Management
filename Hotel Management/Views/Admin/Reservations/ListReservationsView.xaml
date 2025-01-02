@@ -24,7 +24,7 @@
                 <DataGridTextColumn Header="Check-Out Date" Binding="{Binding CheckOutDate, StringFormat=\{0:yyyy-MM-dd\}}" Width="*" />
                 <DataGridTextColumn Header="Total Price" Binding="{Binding TotalPrice}" Width="*" />
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*" />
-                <DataGridTemplateColumn Header="Actions" Width="150">
+                <DataGridTemplateColumn Header="Opérations" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -28,7 +28,7 @@
 
             <Label Content="Type de Chambre :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
             <ComboBox ItemsSource="{Binding RoomTypes}"
-                      SelectedItem="{Binding CurrentRoom.RoomType, Mode=TwoWay}" 
+                      SelectedItem="{Binding CurrentRoom.RoomType.Name, Mode=TwoWay}" 
                       DisplayMemberPath="Name"
                       FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 

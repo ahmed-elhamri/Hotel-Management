@@ -121,6 +121,46 @@ namespace Hotel_Management.ViewModels
             }
         }
 
+        //private void OpenPopup(Reservation reservation)
+        //{
+        //    if (reservation.Id == 0)
+        //    {
+        //        _tempReservation = new Reservation
+        //        {
+        //            CheckInDate = DateTime.Today,
+        //            CheckOutDate = DateTime.Today.AddDays(1),
+        //            Status = ReservationStatus.Pending,
+        //            TotalPrice = 0
+        //        };
+        //        CurrentReservation = _tempReservation;
+        //    }
+        //    else
+        //    {
+        //        // Create a deep copy of the reservation
+        //        _tempReservation = new Reservation
+        //        {
+        //            Id = reservation.Id,
+        //            UserId = reservation.UserId,
+        //            Client = reservation.Client,
+        //           //i wanna the client name
+        //            RoomId = reservation.RoomId,
+        //            Room = reservation.Room,
+        //            //i wanna the Room name
+        //            CheckInDate = reservation.CheckInDate,
+        //            CheckOutDate = reservation.CheckOutDate,
+        //            TotalPrice = reservation.TotalPrice,
+        //            Status = reservation.Status
+        //        };
+        //        CurrentReservation = _tempReservation;
+        //    }
+
+        //    UpdateAvailableRooms();
+        //    CalculateTotalPrice();
+
+        //    _currentWindow = new AddUpdateReservationWindow { DataContext = this };
+        //    _currentWindow.ShowDialog();
+        //}
+
         private void OpenPopup(Reservation reservation)
         {
             if (reservation.Id == 0)
@@ -136,25 +176,28 @@ namespace Hotel_Management.ViewModels
             }
             else
             {
-                // Create a deep copy of the reservation
+                // Get the objects from your ObservableCollections to ensure reference matching
+                var selectedClient = Users.FirstOrDefault(u => u.Id == reservation.UserId);
+                //var selectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId);
+
+                // Create a deep copy of the reservation with the correct references
                 _tempReservation = new Reservation
                 {
                     Id = reservation.Id,
                     UserId = reservation.UserId,
-                    Client = reservation.Client,
+                    Client = selectedClient ?? reservation.Client,  // Use the client from Users collection
                     RoomId = reservation.RoomId,
-                    Room = reservation.Room,
+                    Room = reservation.Room,     // Use the room from Rooms collection
                     CheckInDate = reservation.CheckInDate,
                     CheckOutDate = reservation.CheckOutDate,
                     TotalPrice = reservation.TotalPrice,
                     Status = reservation.Status
                 };
                 CurrentReservation = _tempReservation;
+               
             }
-
             UpdateAvailableRooms();
             CalculateTotalPrice();
-
             _currentWindow = new AddUpdateReservationWindow { DataContext = this };
             _currentWindow.ShowDialog();
         }
@@ -244,8 +287,6 @@ namespace Hotel_Management.ViewModels
             try
             {
                 _reservationDao.ExportExcel(Reservations.ToList());
-                MessageBox.Show("Excel file exported successfully!", "Success",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

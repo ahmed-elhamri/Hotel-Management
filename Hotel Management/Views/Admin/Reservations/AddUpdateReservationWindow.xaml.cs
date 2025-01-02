@@ -24,6 +24,7 @@ namespace Hotel_Management.Views.Admin.Reservations
         public AddUpdateReservationWindow()
         {
             InitializeComponent();
+
         }
         private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {

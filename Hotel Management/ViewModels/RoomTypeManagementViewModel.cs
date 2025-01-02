@@ -59,6 +59,14 @@ namespace Hotel_Management.ViewModels
 
         private void SaveRoomType()
         {
+            string validationMessage = ValidateRoomType();
+
+            if (!string.IsNullOrEmpty(validationMessage))
+            {
+                MessageBox.Show(validationMessage, "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (CurrentRoomType.Id == 0)
             {
                 _roomTypeDao.AddRoomType(CurrentRoomType);
@@ -72,6 +80,17 @@ namespace Hotel_Management.ViewModels
             }
 
             _currentWindow?.Close();
+        }
+
+        private string ValidateRoomType()
+        {
+            if (string.IsNullOrWhiteSpace(CurrentRoomType.Name))
+                return "Le nom de la categorie est requis.";
+
+            if (string.IsNullOrWhiteSpace(CurrentRoomType.Description))
+                return "La description de la categorie est requis.";
+
+            return null; // No errors
         }
     }
 }

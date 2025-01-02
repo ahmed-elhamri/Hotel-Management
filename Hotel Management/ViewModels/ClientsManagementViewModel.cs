@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace Hotel_Management.ViewModels
 {
-    public class ClientsManagementViewModel
+    public class ClientsManagementViewModel : INotifyPropertyChanged
     {
         private readonly UserDAO _userDao;
         private Window _currentWindow;

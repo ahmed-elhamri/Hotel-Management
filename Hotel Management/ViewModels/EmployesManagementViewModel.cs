@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace Hotel_Management.ViewModels
 {
-    public class EmployesManagementViewModel
+    public class EmployesManagementViewModel : INotifyPropertyChanged
     {
         private readonly UserDAO _userDao;
         private Window _currentWindow;
@@ -115,7 +115,7 @@ namespace Hotel_Management.ViewModels
             else
             {
                 var filtered = Users.Where(u =>
-                    u.LastName != null && u.LastName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)
+                    (u.LastName != null && u.LastName.ToLower().Contains(SearchQuery.ToLower()))
                 ).ToList();
 
                 FilteredUsers = new ObservableCollection<User>(filtered);

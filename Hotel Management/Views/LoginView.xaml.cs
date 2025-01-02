@@ -56,17 +56,6 @@ namespace Hotel_Management.Views
             }
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
-        {
-            var message = new EmailMessage
-            {
-                To = "elhamriahmed41@gmail.com",
-                Subject = "Test Email",
-                Body = "Hello, this is a test email!"
-            };
-
-            EmailService.SendEmail(message);
-
-        }
+       
     }
 }

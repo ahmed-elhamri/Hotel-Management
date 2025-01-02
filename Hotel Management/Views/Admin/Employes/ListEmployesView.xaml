@@ -22,7 +22,7 @@
 
         <!-- DataGrid Section -->
         <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding FilteredUsers}"
-                  HeadersVisibility="Column" Margin="10,44,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+                  HeadersVisibility="Column" Margin="10,44,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Prénom" Binding="{Binding FirstName}" Width="*" />
                 <DataGridTextColumn Header="Nom" Binding="{Binding LastName}" Width="*" />

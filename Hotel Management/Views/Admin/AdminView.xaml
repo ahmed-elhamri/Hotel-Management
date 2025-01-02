@@ -33,16 +33,12 @@
                 <StackPanel VerticalAlignment="Top">
                     <TextBlock Text="Menu" FontSize="18" FontWeight="Bold" Foreground="White" Margin="10" HorizontalAlignment="Center" />
                     <Button x:Name="DashboardBtn" Content="🏠 Tableau de Bord" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="DashboardView"/>
-                    <Button x:Name="ListClientsBtn" Content="👤 Liste des Clients" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListClientsView" />
                     <Button x:Name="ListEmployesBtn" Content="👤 Liste des Employes" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListEmployesView" />
-                    <Button x:Name="ListRoomsBtn" Content="🏢 Liste des Chambres" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
+                    <Button x:Name="ListClientsBtn" Content="👤 Liste des Clients" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListClientsView" />
                     <Button x:Name="ListRoomTypeBtn" Content="🏷️ Liste des Catégories" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomTypeView"/>
-
-                   
-
-                    <Button x:Name="ListPaymentBtn" Content="💳 Liste des Paiements" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListPaiementView" />
-
+                    <Button x:Name="ListRoomsBtn" Content="🏢 Liste des Chambres" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
                     <Button x:Name="ListReservationsBtn" Content="📅 Liste des Réservations" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListReservationsView"/>
+                    <Button x:Name="ListPaymentBtn" Content="💳 Liste des Paiements" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListPaiementView" />
                     <Button Content="🚪 Déconnexion" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Click="Deconnexion_Click" />
                 </StackPanel>
             </Border>

@@ -43,11 +43,6 @@
                     Background="#4CAF50" Foreground="White"
                     BorderThickness="0" Margin="0,20,0,0"
                     Click="LoginButton_Click" />
-                <Button Content="tstmail"
-                     Height="40" FontSize="16"
-                     Background="#4CAF50" Foreground="White"
-                     BorderThickness="0" Margin="0,20,0,0"
-                     Click="TestButton_Click" />
             </StackPanel>
         </Grid>
     </Grid>

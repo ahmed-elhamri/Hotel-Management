@@ -113,6 +113,11 @@ namespace Hotel_Management.ViewModels
 
         private void DeletePaiement(Payment paiement)
         {
+            MessageBoxResult response = MessageBox.Show("Voulez vous supprimer ce paiement", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (response == MessageBoxResult.No)
+            {
+                return;
+            }
             try
             {
                 _paiementDAO.DeletePaiement(paiement);

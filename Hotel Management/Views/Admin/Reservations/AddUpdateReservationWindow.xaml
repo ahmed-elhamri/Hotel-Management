@@ -49,7 +49,7 @@
             <!-- Total Price -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Prix total:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding CurrentReservation.TotalPrice, StringFormat=C2, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding CurrentReservation.TotalPrice, StringFormat=C2, UpdateSourceTrigger=PropertyChanged}" Language="fr-MA"
              IsReadOnly="True" Width="248"/>
             </StackPanel>
 

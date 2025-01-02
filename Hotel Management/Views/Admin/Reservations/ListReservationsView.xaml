@@ -15,8 +15,9 @@
 
         <!-- DataGrid Section -->
         <DataGrid x:Name="reservationDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Reservations}"
-                  HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+                  HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35" IsReadOnly="True">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*" />
                 <DataGridTextColumn Header="Client Name" Binding="{Binding Client.LastName}" Width="*" />
                 <DataGridTextColumn Header="Room Number" Binding="{Binding Room.Name}" Width="*" />
                 <DataGridTextColumn Header="Check-In Date" Binding="{Binding CheckInDate, StringFormat=\{0:yyyy-MM-dd\}}" Width="*" />

@@ -15,7 +15,7 @@
 
         <!-- DataGrid Section -->
         <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding RoomTypes}"
-            HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+            HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />

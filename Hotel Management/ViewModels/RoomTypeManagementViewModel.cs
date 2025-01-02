@@ -48,6 +48,11 @@ namespace Hotel_Management.ViewModels
 
         private void DeleteRoomType(RoomType roomType)
         {
+            MessageBoxResult response = MessageBox.Show("Voulez vous supprimer cette categorie", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (response == MessageBoxResult.No)
+            {
+                return;
+            }
             _roomTypeDao.DeleteRoomType(roomType);
             RoomTypes.Remove(roomType);
         }

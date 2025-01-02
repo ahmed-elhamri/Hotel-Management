@@ -17,9 +17,25 @@
         </Grid.RowDefinitions>
         <!-- Header -->
 
+
+
+        <!-- Search Controls -->
+        <StackPanel Orientation="Horizontal" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBox Width="200" Height="30" Margin="0,0,10,0"
+             Text="{Binding SearchName, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Width="200" Height="30" Margin="0,0,10,0"
+              ItemsSource="{Binding RoomTypes}"
+              DisplayMemberPath="Name"
+              SelectedItem="{Binding SelectedRoomType}" />
+            <Button Content="Rechercher" Background="#4CAF50" Foreground="White" FontSize="16"
+                Cursor="Hand" Width="103" Command="{Binding SearchCommand}" />
+            <Button Content="Exporter Excel" Background="#4CAF50" Foreground="White" FontSize="16"
+                Cursor="Hand" Width="103"  Command="{Binding ExportExcelCommand}"/>
+        </StackPanel>
+        
         <!-- DataGrid Section -->
         <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Rooms}"
-              HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
+              HeadersVisibility="Column" Margin="10,48,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
                 <DataGridTextColumn Header="Capacité" Binding="{Binding Capacity}" Width="*" />
@@ -49,7 +65,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
         <Button Content="➕ Ajouter une chambre" Background="#4CAF50" Foreground="White" FontSize="16"
         Cursor="Hand" Margin="238,400,237,10" Command="{Binding AddCommand}" />
-        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
+        
 
     </Grid>
 </UserControl>

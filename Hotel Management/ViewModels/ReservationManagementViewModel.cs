@@ -1,12 +1,16 @@
 ﻿using Hotel_Management.Commands;
 using Hotel_Management.DAO;
 using Hotel_Management.Models;
+using Hotel_Management.Services;
 using Hotel_Management.Views.Admin.Reservations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Hotel_Management.ViewModels
@@ -33,15 +37,15 @@ namespace Hotel_Management.ViewModels
 
         public ReservationsManagementViewModel()
         {
-            
+
             _reservationDao = new ReservationDAO();
             _userDao = new UserDAO();
             _roomDao = new RoomDAO();
 
-            
+
             LoadData();
 
-            
+
             UpdateCommand = new RelayCommand(reservation => OpenPopup((Reservation)reservation));
             DeleteCommand = new RelayCommand(reservation => DeleteReservation((Reservation)reservation));
             AddCommand = new RelayCommand(_ => OpenPopup(new Reservation()));
@@ -53,7 +57,7 @@ namespace Hotel_Management.ViewModels
 
         private void LoadData()
         {
-            
+
             Reservations = new ObservableCollection<Reservation>(_reservationDao.GetAllReservations());
             Users = new ObservableCollection<User>(_userDao.GetAllUsers());
             Rooms = new ObservableCollection<Room>(_roomDao.GetAllRooms());
@@ -65,13 +69,18 @@ namespace Hotel_Management.ViewModels
 
         private void DeleteReservation(Reservation reservation)
         {
+            MessageBoxResult response = MessageBox.Show("Voulez vous supprimer cette reservation", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (response == MessageBoxResult.No)
+            {
+                return;
+            }
             _reservationDao.DeleteReservation(reservation);
             Reservations.Remove(reservation);
         }
 
         private void OpenPopup(Reservation reservation)
         {
-            if (reservation.Id == 0) 
+            if (reservation.Id == 0)
             {
                 CurrentReservation = new Reservation
                 {
@@ -80,12 +89,12 @@ namespace Hotel_Management.ViewModels
                     Status = ReservationStatus.Pending
                 };
             }
-            else 
+            else
             {
-                
+
                 CurrentReservation = _reservationDao.GetReservationById(reservation.Id);
 
-                
+
                 if (CurrentReservation.Client != null)
                 {
                     var selectedUser = Users.FirstOrDefault(u => u.Id == CurrentReservation.UserId);
@@ -125,6 +134,7 @@ namespace Hotel_Management.ViewModels
                 {
                     _reservationDao.AddReservation(CurrentReservation);
                     Reservations.Add(CurrentReservation);
+                    SendConfirmationEmail(CurrentReservation);
                     MessageBox.Show("Reservation added successfully!", "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -133,11 +143,12 @@ namespace Hotel_Management.ViewModels
                     _reservationDao.UpdateReservation(CurrentReservation);
                     var index = Reservations.IndexOf(Reservations.First(u => u.Id == CurrentReservation.Id));
                     Reservations[index] = CurrentReservation;
+                    SendConfirmationEmail(CurrentReservation);
                     MessageBox.Show("Reservation updated successfully!", "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
-                
+
                 var updatedList = _reservationDao.GetAllReservations();
                 Reservations.Clear();
                 foreach (var res in updatedList)
@@ -166,6 +177,92 @@ namespace Hotel_Management.ViewModels
             {
                 MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SendConfirmationEmail(Reservation reservation)
+        {
+            try
+            {
+                var emailMessage = new EmailMessage
+                {
+                    To = reservation.Client.Email,
+                    Subject = "Hotel Reservation Confirmation",
+                    Body = $@"
+                        <html>
+                        <head>
+                           <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    margin: 20px;
+                                    color: #333;
+                                    line-height: 1.6;
+                                }}
+                                h1 {{
+                                    color: #2ecc71;
+                                    text-align: center;
+                                }}
+                                .reservation-details {{
+                                    margin: 20px 0;
+                                    padding: 15px;
+                                    border: 1px solid #ddd;
+                                    border-radius: 8px;
+                                    background-color: #f9f9f9;
+                                }}
+                                .reservation-details h2 {{
+                                    margin-bottom: 10px;
+                                    color: #2d3748;
+                                }}
+                                .reservation-details ul {{
+                                    list-style-type: none;
+                                    padding: 0;
+                                }}
+                                .reservation-details li {{
+                                    margin: 5px 0;
+                                }}
+                                .footer {{
+                                    margin-top: 20px;
+                                    text-align: center;
+                                    font-size: 0.9em;
+                                    color: #777;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <h1>Merci pour votre réservation !</h1>
+                            <p>Cher/Chère {reservation.Client.FirstName} {reservation.Client.LastName},</p>
+                            <p>Nous sommes ravis de confirmer votre réservation à notre hôtel. Voici les détails :</p>
+                            <div class='reservation-details'>
+                                <h2>Détails de la réservation</h2>
+                                <ul>
+                                    <li><strong>Numéro de réservation :</strong> {reservation.Id}</li>
+                                    <li><strong>Date d'arrivée :</strong> {reservation.CheckInDate:dd/MM/yyyy}</li>
+                                    <li><strong>Date de départ :</strong> {reservation.CheckOutDate:dd/MM/yyyy}</li>
+                                    <li><strong>Numéro de chambre :</strong> {reservation.Room.Name}</li>
+                                    <li><strong>Type de chambre :</strong> {reservation.Room.RoomType.Name}</li>
+                                    <li><strong>Prix par nuit :</strong> {reservation.Room.Price:F2} MAD</li>
+                                    <li><strong>Durée du séjour :</strong> {(reservation.CheckOutDate - reservation.CheckInDate).TotalDays} nuits</li>
+                                    <li><strong>Montant total :</strong> {reservation.TotalPrice:F2} MAD</li>
+                                    <li><strong>Statut de la réservation :</strong> {reservation.Status}</li>
+                                </ul>
+                            </div>
+                            <p>Si vous avez des questions ou si vous souhaitez modifier votre réservation, n'hésitez pas à nous contacter.</p>
+                            <div class='footer'>
+                                <p>À bientôt !</p>
+                                <p><em>L'équipe de gestion de l'hôtel</em></p>
+                            </div>
+                        </body>
+                        </html>
+                        "
+                };
+
+                EmailService.SendEmail(emailMessage);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to send confirmation email: {ex.Message}", "Email Error",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Don't throw - we don't want to interrupt the reservation process if email fails
             }
         }
     }

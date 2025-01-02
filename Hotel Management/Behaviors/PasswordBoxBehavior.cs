@@ -27,7 +27,7 @@ namespace Hotel_Management.Behaviors
 
         public static void SetPassword(DependencyObject obj, string value)
         {
-            obj.SetValue(PasswordProperty, value);
+            obj.SetValue(PasswordProperty, value ?? string.Empty);
         }
 
         private static void HandlePasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -35,7 +35,7 @@ namespace Hotel_Management.Behaviors
             if (d is PasswordBox passwordBox)
             {
                 passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
-                if (e.NewValue != null)
+                if (!string.IsNullOrEmpty(e.NewValue?.ToString()))
                 {
                     passwordBox.Password = e.NewValue.ToString();
                 }

@@ -18,16 +18,22 @@ namespace Hotel_Management.ViewModels
     {
         private readonly RoomDAO _roomDao;
         private readonly RoomTypeDAO _roomTypeDao;
+        private List<Room> _allRooms;
         private Window _currentWindow;
 
         public ObservableCollection<Room> Rooms { get; set; }
         public ObservableCollection<RoomType> RoomTypes { get; set; }
         public Room CurrentRoom { get; set; }
 
+        public string SearchName { get; set; }
+        public RoomType SelectedRoomType { get; set; }
+
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+
+        public ICommand SearchCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
 
         public RoomManagementViewModel()
@@ -35,15 +41,38 @@ namespace Hotel_Management.ViewModels
             _roomDao = new RoomDAO();
             _roomTypeDao = new RoomTypeDAO();
 
-            // Only initialize once
+
             RoomTypes = new ObservableCollection<RoomType>(_roomTypeDao.GetAllRoomTypes());
-            Rooms = new ObservableCollection<Room>(_roomDao.GetAllRooms());
+            _allRooms = _roomDao.GetAllRooms(); // Store all rooms
+            Rooms = new ObservableCollection<Room>(_allRooms);
 
             AddCommand = new RelayCommand(_ => OpenPopup(new Room { IsAvailable = true }));
             UpdateCommand = new RelayCommand(room => OpenPopup((Room)room));
             DeleteCommand = new RelayCommand(room => DeleteRoom((Room)room));
             SaveCommand = new RelayCommand(_ => SaveRoom());
             ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
+            SearchCommand = new RelayCommand(_ => FilterRooms());
+        }
+
+        private void FilterRooms()
+        {
+            var filteredRooms = _allRooms.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchName))
+            {
+                filteredRooms = filteredRooms.Where(r => r.Name.Contains(SearchName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (SelectedRoomType != null)
+            {
+                filteredRooms = filteredRooms.Where(r => r.RoomTypeId == SelectedRoomType.Id);
+            }
+
+            Rooms.Clear();
+            foreach (var room in filteredRooms)
+            {
+                Rooms.Add(room);
+            }
         }
 
         private void OpenPopup(Room room)
@@ -55,12 +84,25 @@ namespace Hotel_Management.ViewModels
 
         private void DeleteRoom(Room room)
         {
+            MessageBoxResult response = MessageBox.Show("Voulez vous supprimer cette chambre", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (response == MessageBoxResult.No)
+            {
+                return;
+            }
             _roomDao.DeleteRoom(room);
             Rooms.Remove(room);
         }
 
         private void SaveRoom()
         {
+            string validationMessage = ValidateRoom();
+
+            if (!string.IsNullOrEmpty(validationMessage))
+            {
+                MessageBox.Show(validationMessage, "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (CurrentRoom.Id == 0)
             {
                 _roomDao.AddRoom(CurrentRoom);
@@ -74,6 +116,23 @@ namespace Hotel_Management.ViewModels
             }
 
             _currentWindow?.Close();
+        }
+
+        private string ValidateRoom()
+        {
+            if (string.IsNullOrWhiteSpace(CurrentRoom.Name))
+                return "Le nom de la chambre est requis.";
+
+            if (!int.TryParse(CurrentRoom.Capacity.ToString(), out int capacity) || capacity <= 0)
+                return "La capacité doit être un entier positif.";
+
+            if (!double.TryParse(CurrentRoom.Price.ToString(), out double price) || price <= 0)
+                return "Le prix doit être un nombre positif.";
+
+            if (CurrentRoom.RoomType == null)
+                return "Le type de chambre est requis.";
+
+            return null; // No errors
         }
 
         private void ExportToExcel()

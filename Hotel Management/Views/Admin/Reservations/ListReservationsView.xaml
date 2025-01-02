@@ -48,6 +48,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10"/>
         <Button Content="➕ Ajouter une reservation" Background="#4CAF50" Foreground="White" FontSize="16"
          Cursor="Hand" Margin="238,400,217,10" Command="{Binding AddCommand}" />
-        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
+        <Button Content="Exporter Excel" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top" Width="103" Background="#4CAF50" Foreground="White" FontSize="16"
+         Cursor="Hand"  Command="{Binding ExportExcelCommand}"/>
     </Grid>
 </UserControl>

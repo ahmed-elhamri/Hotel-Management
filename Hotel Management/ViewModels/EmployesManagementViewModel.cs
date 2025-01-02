@@ -7,6 +7,7 @@ using Hotel_Management.Views.Admin.Employes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,28 +16,48 @@ using System.Windows.Input;
 
 namespace Hotel_Management.ViewModels
 {
-    public class EmployesManagementViewModel
+    public class EmployesManagementViewModel : INotifyPropertyChanged
     {
         private readonly UserDAO _userDao;
         private Window _currentWindow;
         private string _tempPassword;
-
+        private ObservableCollection<User> _users;
+        private ObservableCollection<User> _filteredUsers;
         private string _searchQuery;
+
+        public ObservableCollection<User> Users
+        {
+            get => _users;
+            set
+            {
+                _users = value;
+                OnPropertyChanged(nameof(Users));
+            }
+        }
+
+        public ObservableCollection<User> FilteredUsers
+        {
+            get => _filteredUsers;
+            set
+            {
+                _filteredUsers = value;
+                OnPropertyChanged(nameof(FilteredUsers));
+            }
+        }
+
         public string SearchQuery
         {
             get => _searchQuery;
             set
             {
                 _searchQuery = value;
-                //OnPropertyChanged(nameof(SearchQuery));
-                FilterUsers(); // Automatically filter when the query changes
+                OnPropertyChanged(nameof(SearchQuery));
+                FilterUsers();
             }
         }
 
-        public ObservableCollection<User> FilteredUsers { get; set; }
-
-        public ObservableCollection<User> Users { get; set; }
         public User CurrentUser { get; set; }
+        public bool IsPasswordVisible { get; set; }
 
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
@@ -44,12 +65,11 @@ namespace Hotel_Management.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
 
-
         public EmployesManagementViewModel()
         {
             _userDao = new UserDAO();
-            Users = new ObservableCollection<User>(_userDao.GetAllEmployes());
-            FilteredUsers = new ObservableCollection<User>(Users);
+            LoadUsers();
+
             AddCommand = new RelayCommand(_ => OpenPopup(new User()));
             UpdateCommand = new RelayCommand(user => OpenPopup((User)user));
             DeleteCommand = new RelayCommand(user => DeleteUser((User)user));
@@ -57,13 +77,19 @@ namespace Hotel_Management.ViewModels
             ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
         }
 
+        private void LoadUsers()
+        {
+            var usersList = _userDao.GetAllEmployes();
+            Users = new ObservableCollection<User>(usersList);
+            FilteredUsers = new ObservableCollection<User>(Users);
+        }
+
         private void OpenPopup(User user)
         {
             CurrentUser = user;
-            // Store the current hashed password if it's an update
             _tempPassword = user.Id != 0 ? user.Password : null;
-            // Clear password in the UI
-            CurrentUser.Password = string.Empty;
+            IsPasswordVisible = user.Id != 0; // Show password field only for existing users
+            CurrentUser.Password = string.Empty; // Clear password field for UI
 
             _currentWindow = new AddUpdateEmployeWindow { DataContext = this };
             _currentWindow.ShowDialog();
@@ -71,6 +97,11 @@ namespace Hotel_Management.ViewModels
 
         private void DeleteUser(User user)
         {
+            MessageBoxResult response = MessageBox.Show("Voulez vous supprimer ce employé", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (response == MessageBoxResult.No)
+            {
+                return;
+            }
             _userDao.DeleteUser(user);
             Users.Remove(user);
         }
@@ -79,19 +110,15 @@ namespace Hotel_Management.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SearchQuery))
             {
-                FilteredUsers.Clear();
-                foreach (var user in Users)
-                    FilteredUsers.Add(user);
+                FilteredUsers = new ObservableCollection<User>(Users);
             }
             else
             {
                 var filtered = Users.Where(u =>
-                    u.LastName != null && u.LastName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)
+                    (u.LastName != null && u.LastName.ToLower().Contains(SearchQuery.ToLower()))
                 ).ToList();
 
-                FilteredUsers.Clear();
-                foreach (var user in filtered)
-                    FilteredUsers.Add(user);
+                FilteredUsers = new ObservableCollection<User>(filtered);
             }
         }
 
@@ -112,6 +139,7 @@ namespace Hotel_Management.ViewModels
 
         private void SaveUser()
         {
+            // Basic validation checks
             if (string.IsNullOrWhiteSpace(CurrentUser.FirstName))
             {
                 MessageBox.Show("Le prénom est obligatoire.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -136,43 +164,47 @@ namespace Hotel_Management.ViewModels
                 return;
             }
 
-            if (string.IsNullOrEmpty(CurrentUser.Password) && CurrentUser.Id == 0) // Check for password only on new users
+            try
             {
-                MessageBox.Show("Le mot de passe est obligatoire.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                bool isNewUser = CurrentUser.Id == 0;
 
-            if (CurrentUser.Password.Length < 6 && CurrentUser.Id == 0) // Check length only on new passwords
-            {
-                MessageBox.Show("Le mot de passe doit contenir au moins 6 caractères.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            // Only hash password if it's not empty
-            if (!string.IsNullOrEmpty(CurrentUser.Password))
-            {
-                CurrentUser.Password = BCrypt.Net.BCrypt.HashPassword(CurrentUser.Password);
-            }
-            else if (CurrentUser.Id != 0)
-            {
-                // If updating and password is empty, restore the original password
-                CurrentUser.Password = _tempPassword;
-            }
+                if (isNewUser)
+                {
+                    // Set default password for new user
+                    CurrentUser.Password = BCrypt.Net.BCrypt.HashPassword("DefaultPassword123");
+                    CurrentUser.Role = UserRole.Employe;
+                    _userDao.AddUser(CurrentUser);
 
-            if (CurrentUser.Id == 0)
-            {
-                CurrentUser.Role = UserRole.Employe;
-                _userDao.AddUser(CurrentUser);
-                Users.Add(CurrentUser);
-            }
-            else
-            {
-                _userDao.UpdateUser(CurrentUser);
-                // Update the item in the collection
-                var index = Users.IndexOf(Users.First(u => u.Id == CurrentUser.Id));
-                Users[index] = CurrentUser;
-            }
+                    // Reload the full list to ensure we have the correct ID
+                    LoadUsers();
+                }
+                else
+                {
+                    // For existing user, only update password if a new one was provided
+                    if (!string.IsNullOrWhiteSpace(CurrentUser.Password))
+                    {
+                        if (CurrentUser.Password.Length < 6)
+                        {
+                            MessageBox.Show("Le mot de passe doit contenir au moins 6 caractères.", "Erreur de validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        CurrentUser.Password = BCrypt.Net.BCrypt.HashPassword(CurrentUser.Password);
+                    }
+                    else
+                    {
+                        CurrentUser.Password = _tempPassword;
+                    }
 
-            _currentWindow?.Close();
+                    _userDao.UpdateUser(CurrentUser);
+                    LoadUsers();
+                }
+
+                _currentWindow?.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'enregistrement: {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private bool IsValidEmail(string email)
@@ -191,6 +223,12 @@ namespace Hotel_Management.ViewModels
         private bool IsValidPhone(string phoneNumber)
         {
             return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 10; // Adjust length if needed
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

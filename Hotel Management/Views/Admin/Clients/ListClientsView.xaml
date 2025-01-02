@@ -16,11 +16,13 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10">
             <TextBox Width="300" Height="30" Margin="0,0,10,0" 
                  Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Exporter Excel" Background="#4CAF50" Foreground="White" FontSize="16"
+                Cursor="Hand" Width="103"  Command="{Binding ExportExcelCommand}"/>
         </StackPanel>
 
         <!-- DataGrid Section -->
-        <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding FilteredClients}" IsReadOnly="True"
-              HeadersVisibility="Column" Margin="10,44,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35" HorizontalScrollBarVisibility="Auto">
+        <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding FilteredUsers}"
+              HeadersVisibility="Column" Margin="10,44,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Prénom" Binding="{Binding FirstName}" Width="*" />
                 <DataGridTextColumn Header="Nom" Binding="{Binding LastName}" Width="*" />
@@ -43,9 +45,8 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="➕ Ajouter un client" Background="#4CAF50" Foreground="White" FontSize="16"
+        <Button Content="➕ Ajouter un employé" Background="#4CAF50" Foreground="White" FontSize="16"
         Cursor="Hand" Margin="238,400,217,10" Command="{Binding AddCommand}" />
-        <Button Content="Exporter Excel" HorizontalAlignment="Left" Margin="500,2,0,0" VerticalAlignment="Top" Width="103"  Command="{Binding ExportExcelCommand}"/>
 
     </Grid>
 </UserControl>

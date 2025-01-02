@@ -17,8 +17,8 @@
         <DataGrid x:Name="employeDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding RoomTypes}"
             HeadersVisibility="Column" Margin="10,26,10,58" AlternatingRowBackground="#ecf0f1" GridLinesVisibility="Horizontal" RowHeight="35">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Prénom" Binding="{Binding Name}" Width="*" />
-                <DataGridTextColumn Header="Nom" Binding="{Binding Description}" Width="*" />
+                <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
                 <DataGridTemplateColumn Header="Opérations" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -118,7 +118,7 @@ namespace Hotel_Management.DAO
                     {
                         Filter = "Excel Files (*.xlsx)|*.xlsx",
                         DefaultExt = "xlsx",
-                        FileName = $"Employes_{DateTime.Now:yyyyMMdd}"
+                        FileName = $"Users_{DateTime.Now:yyyyMMdd}"
                     };
 
                     if (saveFileDialog.ShowDialog() == true)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hotel_Management.Models;
+using Hotel_Management.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,21 @@ namespace Hotel_Management.Views.Admin.Reservations
         public AddUpdateReservationWindow()
         {
             InitializeComponent();
+        }
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ReservationsManagementViewModel viewModel)
+            {
+                viewModel.OnCheckInDateChanged();
+            }
+        }
+        private void Room_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            if (DataContext is ReservationsManagementViewModel viewModel)
+            {
+                viewModel.OnRoomChanged();
+            }
         }
     }
 }

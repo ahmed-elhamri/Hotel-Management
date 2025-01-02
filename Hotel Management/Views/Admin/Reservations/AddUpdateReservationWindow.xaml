@@ -21,34 +21,36 @@
                           FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
             </StackPanel>
 
-            <!-- Room -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Chambre:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <ComboBox ItemsSource="{Binding Rooms}"
-                          SelectedItem="{Binding CurrentReservation.Room}"
-                          DisplayMemberPath="Name"
-                          FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
-            </StackPanel>
+
 
             <!-- Check-In Date -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Date d'entrée:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <DatePicker SelectedDate="{Binding CurrentReservation.CheckInDate}"
-                            FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+                <DatePicker SelectedDate="{Binding CurrentReservation.CheckInDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateChanged="DatePicker_SelectedDateChanged" Width="248"/>
             </StackPanel>
 
             <!-- Check-Out Date -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Date de sortie:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <DatePicker SelectedDate="{Binding CurrentReservation.CheckOutDate}"
-                            FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+                <DatePicker SelectedDate="{Binding CurrentReservation.CheckOutDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateChanged="DatePicker_SelectedDateChanged" Width="248"/>
+            </StackPanel>
+
+            <!-- Room -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="Chambre:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding AvailableRooms}"
+              SelectedItem="{Binding CurrentReservation.Room, UpdateSourceTrigger=PropertyChanged}"
+              DisplayMemberPath="Name"
+              SelectionChanged="Room_SelectionChanged" Width="248"/>
             </StackPanel>
 
             <!-- Total Price -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Prix total:" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding CurrentReservation.TotalPrice}"
-                         FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="250"/>
+                <TextBox Text="{Binding CurrentReservation.TotalPrice, StringFormat=C2, UpdateSourceTrigger=PropertyChanged}"
+             IsReadOnly="True" Width="248"/>
             </StackPanel>
 
             <!-- Status -->

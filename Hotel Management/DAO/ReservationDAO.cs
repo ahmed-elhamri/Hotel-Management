@@ -42,7 +42,6 @@ namespace Hotel_Management.DAO
             {
                 using (var newContext = new DatabaseContext())
                 {
-                    
                     var existingReservation = newContext.Reservation
                         .Include(r => r.Client)
                         .Include(r => r.Room)
@@ -50,7 +49,10 @@ namespace Hotel_Management.DAO
 
                     if (existingReservation != null)
                     {
-                       
+                        // Store the old room ID before updating
+                        //int oldRoomId = existingReservation.RoomId;
+
+                        // Update reservation details
                         existingReservation.UserId = reservation.Client.Id;
                         existingReservation.RoomId = reservation.Room.Id;
                         existingReservation.CheckInDate = reservation.CheckInDate;
@@ -58,6 +60,17 @@ namespace Hotel_Management.DAO
                         existingReservation.TotalPrice = reservation.TotalPrice;
                         existingReservation.Status = reservation.Status;
 
+                        // Update rooms' availability using the same context
+                        //var newRoom = newContext.Room.Find(reservation.Room.Id);
+                        //var oldRoom = newContext.Room.Find(oldRoomId);
+
+                        //if (newRoom != null && oldRoom != null && oldRoomId != reservation.Room.Id)
+                        //{
+                        //    newRoom.IsAvailable = false;
+                        //    oldRoom.IsAvailable = true;
+                        //}
+
+                        // Save all changes at once
                         newContext.SaveChanges();
                     }
                 }
@@ -87,6 +100,15 @@ namespace Hotel_Management.DAO
                 _context.SaveChanges();
 
                 
+                //var room = _context.Room.Find(reservation.Room.Id);
+                //if (room != null)
+                //{
+                //    room.IsAvailable = false;
+                //    _context.SaveChanges();
+                //}
+
+               
+
                 reservation.Id = newReservation.Id;
             }
             catch (Exception ex)
@@ -178,6 +200,14 @@ namespace Hotel_Management.DAO
                     {
                         _context.Reservation.Remove(reservationToDelete);
                         _context.SaveChanges();
+
+                        // Update the room's availability
+                        //var room = _context.Room.Find(reservation.Room.Id);
+                        //if (room != null)
+                        //{
+                        //    room.IsAvailable = true;
+                        //    _context.SaveChanges();
+                        //}
                     }
                 }
             }
@@ -256,6 +286,31 @@ namespace Hotel_Management.DAO
             catch (Exception ex)
             {
                 throw new Exception($"Error generating PDF: {ex.Message}", ex);
+            }
+        }
+        public List<Room> GetAvailableRooms(DateTime checkIn, DateTime checkOut)
+        {
+            try
+            {
+                // Get all rooms first
+                var allRooms = _context.Room.Include(r => r.RoomType).ToList();
+
+                // Get reservations that overlap with the requested dates
+                var overlappingReservations = _context.Reservation
+                    .Where(r => r.Status != ReservationStatus.Cancelled &&
+                               ((r.CheckInDate <= checkIn && r.CheckOutDate > checkIn) ||
+                                (r.CheckInDate < checkOut && r.CheckOutDate >= checkOut) ||
+                                (r.CheckInDate >= checkIn && r.CheckOutDate <= checkOut)))
+                    .Select(r => r.RoomId)
+                    .Distinct()
+                    .ToList();
+
+                // Filter out rooms that have overlapping reservations
+                return allRooms.Where(r => !overlappingReservations.Contains(r.Id)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error getting available rooms: {ex.Message}", ex);
             }
         }
     }

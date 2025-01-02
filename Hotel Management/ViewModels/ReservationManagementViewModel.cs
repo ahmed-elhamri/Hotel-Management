@@ -5,18 +5,22 @@ using Hotel_Management.Views.Admin.Reservations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Hotel_Management.ViewModels
 {
-    public class ReservationsManagementViewModel
+    public class ReservationsManagementViewModel: INotifyPropertyChanged
     {
         private readonly ReservationDAO _reservationDao;
         private readonly UserDAO _userDao;
         private readonly RoomDAO _roomDao;
         private Window _currentWindow;
+        private Reservation _tempReservation;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<Reservation> Reservations { get; set; }
         public ObservableCollection<User> Users { get; set; }
@@ -24,12 +28,41 @@ namespace Hotel_Management.ViewModels
         public List<ReservationStatus> ReservationStatuses { get; set; }
         public Reservation CurrentReservation { get; set; }
 
+        private ObservableCollection<Room> _availableRooms;
+        public ObservableCollection<Room> AvailableRooms
+        {
+            get => _availableRooms;
+            set
+            {
+                _availableRooms = value;
+                OnPropertyChanged(nameof(AvailableRooms));
+            }
+        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        private void UpdateAvailableRooms()
+        {
+            if (CurrentReservation != null &&
+                CurrentReservation.CheckInDate != default &&
+                CurrentReservation.CheckOutDate != default)
+            {
+                var availableRooms = _reservationDao.GetAvailableRooms(
+                    CurrentReservation.CheckInDate,
+                    CurrentReservation.CheckOutDate
+                );
+                AvailableRooms = new ObservableCollection<Room>(availableRooms);
+            }
+        }
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
+        public ICommand ExportPdfCommand { get; set; }
 
         public ReservationsManagementViewModel()
         {
@@ -48,6 +81,7 @@ namespace Hotel_Management.ViewModels
             SaveCommand = new RelayCommand(_ => SaveReservation());
             CancelCommand = new RelayCommand(_ => _currentWindow?.Close());
             ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
+            ExportPdfCommand = new RelayCommand(reservation=> ExportToPdf((Reservation)reservation));
 
         }
 
@@ -55,7 +89,7 @@ namespace Hotel_Management.ViewModels
         {
             
             Reservations = new ObservableCollection<Reservation>(_reservationDao.GetAllReservations());
-            Users = new ObservableCollection<User>(_userDao.GetAllUsers());
+            Users = new ObservableCollection<User>(_userDao.GetAllClients());
             Rooms = new ObservableCollection<Room>(_roomDao.GetAllRooms());
 
             ReservationStatuses = Enum.GetValues(typeof(ReservationStatus))
@@ -69,39 +103,62 @@ namespace Hotel_Management.ViewModels
             Reservations.Remove(reservation);
         }
 
+        private void CalculateTotalPrice()
+        {
+            if (CurrentReservation != null &&
+                CurrentReservation.Room != null &&
+                CurrentReservation.CheckInDate != default &&
+                CurrentReservation.CheckOutDate != default)
+            {
+                // Calculer le nombre de jours
+                int numberOfDays = (int)(CurrentReservation.CheckOutDate - CurrentReservation.CheckInDate).TotalDays;
+
+                // Calculer le prix total
+                CurrentReservation.TotalPrice = CurrentReservation.Room.Price * numberOfDays;
+
+                // Notifier le changement
+                OnPropertyChanged(nameof(CurrentReservation));
+            }
+        }
+
         private void OpenPopup(Reservation reservation)
         {
-            if (reservation.Id == 0) 
+            if (reservation.Id == 0)
             {
-                CurrentReservation = new Reservation
+                _tempReservation = new Reservation
                 {
                     CheckInDate = DateTime.Today,
                     CheckOutDate = DateTime.Today.AddDays(1),
-                    Status = ReservationStatus.Pending
+                    Status = ReservationStatus.Pending,
+                    TotalPrice = 0
                 };
+                CurrentReservation = _tempReservation;
             }
-            else 
+            else
             {
-                
-                CurrentReservation = _reservationDao.GetReservationById(reservation.Id);
-
-                
-                if (CurrentReservation.Client != null)
+                // Create a deep copy of the reservation
+                _tempReservation = new Reservation
                 {
-                    var selectedUser = Users.FirstOrDefault(u => u.Id == CurrentReservation.UserId);
-                    CurrentReservation.Client = selectedUser;
-                }
-
-                if (CurrentReservation.Room != null)
-                {
-                    var selectedRoom = Rooms.FirstOrDefault(r => r.Id == CurrentReservation.RoomId);
-                    CurrentReservation.Room = selectedRoom;
-                }
+                    Id = reservation.Id,
+                    UserId = reservation.UserId,
+                    Client = reservation.Client,
+                    RoomId = reservation.RoomId,
+                    Room = reservation.Room,
+                    CheckInDate = reservation.CheckInDate,
+                    CheckOutDate = reservation.CheckOutDate,
+                    TotalPrice = reservation.TotalPrice,
+                    Status = reservation.Status
+                };
+                CurrentReservation = _tempReservation;
             }
+
+            UpdateAvailableRooms();
+            CalculateTotalPrice();
 
             _currentWindow = new AddUpdateReservationWindow { DataContext = this };
             _currentWindow.ShowDialog();
         }
+
 
         private void SaveReservation()
         {
@@ -129,17 +186,17 @@ namespace Hotel_Management.ViewModels
                     MessageBox.Show("Reservation added successfully!", "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    try
-                    {
-                        _reservationDao.ExportReservationToPdf(CurrentReservation);
-                    }
-                    catch (Exception pdfEx)
-                    {
-                        MessageBox.Show($"Reservation was saved but there was an error generating the PDF: {pdfEx.Message}",
-                            "PDF Generation Error",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-                    }
+                    //try
+                    //{
+                    //    _reservationDao.ExportReservationToPdf(CurrentReservation);
+                    //}
+                    //catch (Exception pdfEx)
+                    //{
+                    //    MessageBox.Show($"Reservation was saved but there was an error generating the PDF: {pdfEx.Message}",
+                    //        "PDF Generation Error",
+                    //        MessageBoxButton.OK,
+                    //        MessageBoxImage.Warning);
+                    //}
                 }
                 else
                 {
@@ -151,12 +208,12 @@ namespace Hotel_Management.ViewModels
                 }
 
                 
-                var updatedList = _reservationDao.GetAllReservations();
-                Reservations.Clear();
-                foreach (var res in updatedList)
-                {
-                    Reservations.Add(res);
-                }
+                //var updatedList = _reservationDao.GetAllReservations();
+                //Reservations.Clear();
+                //foreach (var res in updatedList)
+                //{
+                //    Reservations.Add(res);
+                //}
 
                 _currentWindow?.Close();
             }
@@ -164,6 +221,21 @@ namespace Hotel_Management.ViewModels
             {
                 MessageBox.Show($"Error saving reservation: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ExportToPdf(Reservation reservation)
+        {
+            try
+            {
+                _reservationDao.ExportReservationToPdf(reservation);
+            }
+            catch (Exception pdfEx)
+            {
+                MessageBox.Show($"Reservation was saved but there was an error generating the PDF: {pdfEx.Message}",
+                    "PDF Generation Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
@@ -180,6 +252,25 @@ namespace Hotel_Management.ViewModels
                 MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        // Mettez à jour les méthodes de changement de date
+        public void OnCheckInDateChanged()
+        {
+            UpdateAvailableRooms();
+            CalculateTotalPrice();
+        }
+
+        public void OnCheckOutDateChanged()
+        {
+            UpdateAvailableRooms();
+            CalculateTotalPrice();
+        }
+
+        // Ajoutez cette méthode pour gérer le changement de chambre
+        public void OnRoomChanged()
+        {
+            CalculateTotalPrice();
         }
     }
 }

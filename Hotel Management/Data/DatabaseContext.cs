@@ -16,6 +16,7 @@ namespace Hotel_Management.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<RoomType> RoomType { get; set; }
+        public DbSet<Payment> Payment { get; set; }
 
         public DbSet<Reservation> Reservation { get; set; }
 

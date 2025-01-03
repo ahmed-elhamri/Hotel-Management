@@ -11,6 +11,7 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 
@@ -23,6 +24,9 @@ namespace Hotel_Management.ViewModels
         private readonly RoomDAO _roomDao;
         private Window _currentWindow;
         private Reservation _tempReservation;
+        public string SearchName { get; set; }
+        public ComboBoxItem orderCombobox { get; set; }
+        private List<Reservation> _allReservations;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -67,6 +71,7 @@ namespace Hotel_Management.ViewModels
         public ICommand CancelCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
         public ICommand ExportPdfCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         public ReservationsManagementViewModel()
         {
@@ -78,7 +83,7 @@ namespace Hotel_Management.ViewModels
 
             LoadData();
 
-
+            _allReservations = _reservationDao.GetAllReservations();
             UpdateCommand = new RelayCommand(reservation => OpenPopup((Reservation)reservation));
             DeleteCommand = new RelayCommand(reservation => DeleteReservation((Reservation)reservation));
             AddCommand = new RelayCommand(_ => OpenPopup(new Reservation()));
@@ -86,7 +91,83 @@ namespace Hotel_Management.ViewModels
             CancelCommand = new RelayCommand(_ => _currentWindow?.Close());
             ExportExcelCommand = new RelayCommand(_ => ExportToExcel());
             ExportPdfCommand = new RelayCommand(reservation=> ExportToPdf((Reservation)reservation));
+            SearchCommand = new RelayCommand(_ => FilterReservations());
 
+        }
+
+
+        //private void FilterReservations()
+        //{
+        //    var filteredReservations = _allReservations.AsQueryable();
+
+        //    if (!string.IsNullOrWhiteSpace(SearchName))
+        //    {
+        //        filteredReservations = filteredReservations.Where(r => (r.Client.FirstName + " " + r.Client.LastName).Contains((string)SearchName, StringComparison.OrdinalIgnoreCase) ||
+        //        r.Room.Name.ToString().Contains((string)SearchName));
+        //    }
+
+        //    string selectedStatus = (orderCombobox as ComboBoxItem)?.Content.ToString();
+
+        //    if ((selectedStatus == "Pending" || selectedStatus== "Confirmed" || selectedStatus == "Cancelled") && string.IsNullOrWhiteSpace(SearchName))
+        //    {
+
+        //        filteredReservations = filteredReservations.Where(r => (r.Status.ToString()).Contains((string)selectedStatus, StringComparison.OrdinalIgnoreCase) );
+
+        //    }
+        //    else if(selectedStatus == "All" && string.IsNullOrWhiteSpace(SearchName))
+        //    {
+        //        filteredReservations = _allReservations.AsQueryable();
+        //    }
+
+        //    Reservations.Clear();
+        //    foreach (var reservation in filteredReservations)
+        //    {
+        //        Reservations.Add(reservation);
+        //    }
+        //}
+
+
+        private void FilterReservations()
+        {
+            _allReservations = Reservations.ToList();
+            var filteredReservations = _allReservations.AsQueryable();
+            string selectedStatus = (orderCombobox as ComboBoxItem)?.Content?.ToString();
+            bool hasSearchTerm = !string.IsNullOrWhiteSpace(SearchName);
+            bool hasStatusFilter = selectedStatus != null && selectedStatus != "All";
+
+            // Case 1: Both search term and status filter
+            if (hasSearchTerm && hasStatusFilter)
+            {
+                filteredReservations = filteredReservations.Where(r =>
+                    ((r.Client.FirstName + " " + r.Client.LastName).Contains(SearchName, StringComparison.OrdinalIgnoreCase) ||
+                     r.Room.Name.ToString().Contains(SearchName, StringComparison.OrdinalIgnoreCase)) &&
+                    r.Status.ToString().Equals(selectedStatus, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+            // Case 2: Only search term
+            else if (hasSearchTerm)
+            {
+                filteredReservations = filteredReservations.Where(r =>
+                    (r.Client.FirstName + " " + r.Client.LastName).Contains(SearchName, StringComparison.OrdinalIgnoreCase) ||
+                    r.Room.Name.ToString().Contains(SearchName, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+            // Case 3: Only status filter
+            else if (hasStatusFilter)
+            {
+                filteredReservations = filteredReservations.Where(r =>
+                    r.Status.ToString().Equals(selectedStatus, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+            // Case 4: No filters - show all
+            // (This happens automatically since we start with _allReservations)
+
+            // Update the observable collection
+            Reservations.Clear();
+            foreach (var reservation in filteredReservations)
+            {
+                Reservations.Add(reservation);
+            }
         }
 
         private void LoadData()

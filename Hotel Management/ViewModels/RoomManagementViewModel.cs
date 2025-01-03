@@ -26,6 +26,7 @@ namespace Hotel_Management.ViewModels
         public Room CurrentRoom { get; set; }
 
         public string SearchName { get; set; }
+        
         public RoomType SelectedRoomType { get; set; }
 
         public ICommand AddCommand { get; set; }

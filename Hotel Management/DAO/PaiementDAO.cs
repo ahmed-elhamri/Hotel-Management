@@ -46,6 +46,15 @@ namespace Hotel_Management.DAO
                 };
                 context.Payment.Add(cleanPayment);
                 context.SaveChanges();
+
+                var reservation = _context.Reservation.Find(paiement.ReservationId);
+                if (reservation != null && paiement.Status == PaymentStatus.Paid)
+                {
+                    reservation.Status = ReservationStatus.Confirmed;
+                    _context.SaveChanges();
+                }
+                
+
             }
         }
 
@@ -124,11 +133,26 @@ namespace Hotel_Management.DAO
                 var existingPayment = context.Payment.Find(paiement.Id);
                 if (existingPayment != null)
                 {
+                    // Store the old room ID before updating
+                    int oldReservationId = existingPayment.ReservationId;
+
                     existingPayment.ReservationId = paiement.ReservationId;
                     existingPayment.PaymentDate = paiement.PaymentDate;
                     existingPayment.Amount = paiement.Amount;
                     existingPayment.PaymentMethod = paiement.PaymentMethod;
                     existingPayment.Status = paiement.Status;
+
+                    // Update rooms' availability using the same context
+                    var newReservation = context.Reservation.Find(paiement.ReservationId);
+                    var oldReservation = context.Reservation.Find(oldReservationId);
+
+                    if (newReservation != null && oldReservation != null && 
+                        oldReservationId != paiement.ReservationId && 
+                        paiement.Status == PaymentStatus.Paid)
+                    {
+                        newReservation.Status = ReservationStatus.Confirmed;
+                        oldReservation.Status = ReservationStatus.Pending;
+                    }
                     context.SaveChanges();
                 }
             }
@@ -139,6 +163,13 @@ namespace Hotel_Management.DAO
             if (paiement != null)
             {
                 _context.Payment.Remove(paiement);
+                _context.SaveChanges();
+            }
+
+            var reservation = _context.Reservation.Find(paiement.ReservationId);
+            if (reservation != null && paiement.Status == PaymentStatus.Paid)
+            {
+                reservation.Status = ReservationStatus.Pending;
                 _context.SaveChanges();
             }
         }

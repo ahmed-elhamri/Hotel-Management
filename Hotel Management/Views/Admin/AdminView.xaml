@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hotel_Management.Views"
         mc:Ignorable="d"
+        Icon="../hotel-mini-logo.png"
         Title="Hotel Management" Width="900" WindowStartupLocation="CenterScreen"
         Background="#F3F4F6" d:DesignHeight="551.66" Height="600"
         ResizeMode="NoResize">
@@ -19,7 +20,7 @@
         <Border Grid.Row="0" Background="#374151">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <!-- Logo -->
-                <Image Source="C:\Users\hp\Source\Repos\Hotel-Management\Hotel Management\Images\hotel-logo.png" 
+                <Image Source="../hotel-logo.png" 
                        Height="52" Width="178" />
                 <!-- Logo -->
                 <!-- Logo -->

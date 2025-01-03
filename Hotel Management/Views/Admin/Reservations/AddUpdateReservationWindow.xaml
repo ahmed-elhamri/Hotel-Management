@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Hotel_Management.Views.Admin.Reservations.AddUpdateReservationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add or Update Reservation" Height="500" Width="450" WindowStartupLocation="CenterScreen"
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou modifier un réservation" Height="500" Width="450" WindowStartupLocation="CenterScreen"
         Background="Azure">
 
     <Grid Margin="20">

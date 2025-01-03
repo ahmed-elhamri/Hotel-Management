@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hotel_Management.Views"
         mc:Ignorable="d"
+        Icon="hotel-mini-logo.png"
         Title="Authentification" Height="450" Width="800" WindowStartupLocation="CenterScreen">
 
     <Grid>
@@ -19,7 +20,7 @@
 
                 <!-- Titre -->
                 <!-- Logo -->
-                <Image Source="C:\Users\hp\Source\Repos\Hotel-Management\Hotel Management\Images\hotel-logo.png" 
+                <Image Source="hotel-logo.png" 
                        Height="80"/>
 
                 <!-- Titre -->

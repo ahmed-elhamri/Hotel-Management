@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ajouter/Mettre à jour un paiement" Height="450" Width="439"
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou modifier un Paiement" Height="450" Width="439"
         Background="Azure">
     <Grid Margin="10">
         <Grid.RowDefinitions>

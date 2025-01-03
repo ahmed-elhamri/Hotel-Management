@@ -10,7 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\hotel-logo.png" />
+    <None Remove="Views\hotel-mini-logo.png" />
     <None Remove="Views\image.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\hotel-logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Views\hotel-mini-logo.png" />
     <Resource Include="Views\image.jpg" />
   </ItemGroup>
 

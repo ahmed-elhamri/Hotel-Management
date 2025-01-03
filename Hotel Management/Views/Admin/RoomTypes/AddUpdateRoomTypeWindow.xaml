@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ajouter ou Modifier un Type de Chambre" Width="449" WindowStartupLocation="CenterScreen"
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou Modifier une categorie" Width="449" WindowStartupLocation="CenterScreen"
         Background="Azure" Height="339">
 
     <Grid Margin="20">

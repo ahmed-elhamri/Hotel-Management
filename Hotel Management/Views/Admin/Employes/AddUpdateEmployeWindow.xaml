@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:behaviors="clr-namespace:Hotel_Management.Behaviors"
         mc:Ignorable="d"
-        Title="Add or Update Employee" Width="450" WindowStartupLocation="CenterScreen"
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou modifier un employé" Width="450" WindowStartupLocation="CenterScreen"
         Background="Azure">
 
     <Grid Margin="20">

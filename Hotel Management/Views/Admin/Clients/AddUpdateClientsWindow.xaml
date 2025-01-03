@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Hotel_Management.Views.Admin.Clients"
         xmlns:behaviors="clr-namespace:Hotel_Management.Behaviors"
         mc:Ignorable="d"
-        Title="Add or Update Client" Width="450" WindowStartupLocation="CenterScreen"
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou modifier un client" Width="450" WindowStartupLocation="CenterScreen"
         Background="Azure">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -18,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Ajouter ou modifier " FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#2c3e50"/>
+        <TextBlock Text="Ajouter ou modifier un client" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#2c3e50"/>
         <!-- Form Section -->
         <StackPanel Grid.Row="1" VerticalAlignment="Center" Height="285" >
             <!-- First Name -->

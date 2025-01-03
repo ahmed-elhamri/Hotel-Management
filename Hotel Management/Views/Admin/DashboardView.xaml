@@ -4,42 +4,100 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hotel_Management.Views.Admin"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" d:DesignWidth="800" Height="781">
     <Grid Grid.Column="2" Margin="10">
+        <!-- Tableau de bord -->
         <StackPanel x:Name="DashboardPanel" Visibility="Visible">
-            <TextBlock Text="Tableau de Bord" FontSize="24" FontWeight="Bold" Margin="10" />
+            <!-- Titre -->
+            <TextBlock Text="Tableau de Bord" FontSize="24" FontWeight="Bold" Margin="10" HorizontalAlignment="Center"/>
 
             <!-- Statistiques -->
-            <UniformGrid Columns="2" Margin="0,20">
-                <Border Background="#4CAF50" CornerRadius="5" Padding="20">
-                    <StackPanel>
-                        <TextBlock Text="Nombre de Clients" FontSize="18" FontWeight="Bold" Foreground="White" />
-                        <TextBlock x:Name="ClientCountTextBlock" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
+            <Grid Margin="0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Nombre de Clients -->
+                <Border Background="#4CAF50" CornerRadius="10" Padding="20" Margin="5">
+                    <StackPanel HorizontalAlignment="Left" Width="136" Margin="20,-2,0,2">
+                        <TextBlock FontSize="14" FontWeight="Bold" Foreground="White"><Run Text="Nombre de " /><LineBreak /><Run Text="Clients" /></TextBlock>
+                        <TextBlock x:Name="nbruser" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
                     </StackPanel>
                 </Border>
 
-                <Border Background="#FF9800" CornerRadius="5" Padding="20" Margin="10,0,0,0">
-                    <StackPanel>
-                        <TextBlock Text="Nombre de Chambres" FontSize="18" FontWeight="Bold" Foreground="White" />
-                        <TextBlock x:Name="RoomCountTextBlock" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
+                <!-- Nombre de Chambres -->
+                <Border Background="#4CAF50" CornerRadius="10" Padding="20" Margin="5" Grid.Column="1">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock FontSize="14" FontWeight="Bold" Foreground="White" Width="169"><Run Text="Nombre de " /><LineBreak /><Run Text="Chambres" /></TextBlock>
+                        <TextBlock x:Name="nbrtotalroom" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
                     </StackPanel>
                 </Border>
-            </UniformGrid>
 
-            <!-- Graphiques de Réservations -->
-            <StackPanel Margin="0,20">
-                <TextBlock Text="Graphiques de Réservations" FontSize="18" FontWeight="Bold" Margin="10,0" />
-                <Border Background="#EEEEEE" CornerRadius="5" Height="200" Margin="10">
-                    <TextBlock Text="Graphiques en cours de développement..." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Gray" />
+                <!-- Nombre de Chambres Disponibles -->
+                <Border Background="#4CAF50" CornerRadius="10" Padding="20" Margin="5" Grid.Column="2">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock FontSize="14" FontWeight="Bold" Foreground="White">
+                            <TextBlock.Inlines>
+                                <Run Text="Les Chambres " />
+                                <LineBreak />
+                                <Run Text=" Disponibles" />
+                            </TextBlock.Inlines>
+                        </TextBlock>
+
+                        <TextBlock x:Name="nbrroodispo" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
+                    </StackPanel>
                 </Border>
-            </StackPanel>
 
-            <!-- Calendrier -->
+                <!-- Revenu Total -->
+                <Border Background="#FFA500" CornerRadius="10" Padding="20" Margin="5" Grid.Column="3">
+                    <StackPanel HorizontalAlignment="Left" Margin="-4,-1,0,1">
+                        <TextBlock Text="Revenu Total" FontSize="14" FontWeight="Bold" Foreground="White" />
+                        <TextBlock x:Name="nbrrevunu" FontSize="22" FontWeight="Bold" Foreground="White" Text="0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Graphiques -->
             <StackPanel Margin="0,20">
-                <TextBlock Text="Calendrier des Réservations" FontSize="18" FontWeight="Bold" Margin="10,0" />
-                <Calendar Name="ReservationCalendar" Height="176" Width="253" />
-                <TextBlock x:Name="ReservationDetailsTextBlock" FontSize="16" Margin="20" />
+                <TextBlock Text="Graphiques de Réservations" FontSize="18" FontWeight="Bold" Margin="10,0" HorizontalAlignment="Center"/>
+
+                <!-- Graphique Pie pour les Types de Chambres -->
+                <Border Background="#EEEEEE" CornerRadius="10" Height="327" Margin="10" Width="751">
+                    <Grid Margin="0,0,-29,15">
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="4,2,176,66">
+
+                            <lvc:PieChart x:Name="RoomTypePieChart" Margin="366,52,36,34"
+                                          Series="{Binding SeriesCollection}"
+                                          LegendLocation="Right">
+                            </lvc:PieChart>
+                        </Border>
+                        <lvc:CartesianChart x:Name="RevenueChart" Margin="18,56,458,96">
+                            <lvc:CartesianChart.Series>
+                                <lvc:LineSeries Title="Revenu Mensuel"
+                                    Values="{Binding RevenueValues}"
+                                    PointGeometrySize="10" 
+                                    Fill="Transparent"
+                                    Stroke="SteelBlue"/>
+                            </lvc:CartesianChart.Series>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Mois" Labels="{Binding Months}" />
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Revenu (€)" />
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                        <TextBlock Text="Répartition des Types de Chambres:" FontSize="16" FontWeight="Bold" Margin="330,38,0,229" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Revenu Mensuel par Mois:" FontSize="16" FontWeight="Bold" Margin="58,40,0,230" HorizontalAlignment="Left"/>
+
+                    </Grid>
+                </Border>
+
+                <!-- Graphique Linéaire pour les Revenus Mensuels -->
+                <Border Background="#EEEEEE" CornerRadius="10" Margin="10"/>
             </StackPanel>
         </StackPanel>
     </Grid>

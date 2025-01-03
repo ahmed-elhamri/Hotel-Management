@@ -35,6 +35,20 @@ namespace Hotel_Management.DAO
                 .Include(r => r.Room)
                 .FirstOrDefault(u => u.Id == id);
         }
+        public int   GetTotalPriceOfConfirmedReservations()
+        {
+
+            int totalPrice = (int)(_context.Reservation
+                                         .Where(r => r.Status == ReservationStatus.Confirmed)
+                                         .Sum(r => r.TotalPrice)); 
+
+            
+            return totalPrice;
+        }
+
+        
+          
+
 
         public void UpdateReservation(Reservation reservation)
         {
@@ -314,5 +328,25 @@ namespace Hotel_Management.DAO
                 throw new Exception($"Error getting available rooms: {ex.Message}", ex);
             }
         }
+        public Dictionary<string, double> GetMonthlyRevenue()
+        {
+            var reservations = GetAllReservations();
+
+            var confirmedReservations = reservations.Where(r => r.Status == ReservationStatus.Confirmed).ToList();
+
+            var monthlyRevenue = confirmedReservations
+                .GroupBy(r => new { r.CheckInDate.Year, r.CheckInDate.Month })
+                .Select(g => new
+                {
+                    Month = $"{g.Key.Month:D2}/{g.Key.Year}",
+                    Revenue = g.Sum(r => r.TotalPrice)
+                })
+                .ToDictionary(g => g.Month, g => g.Revenue);
+
+            return monthlyRevenue;
+        }
+
     }
 }
+          
+    

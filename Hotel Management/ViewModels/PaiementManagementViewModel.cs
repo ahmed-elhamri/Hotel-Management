@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Hotel_Management.Views.Admin.Paiements;
+using Hotel_Management.Services;
 
 namespace Hotel_Management.ViewModels
 {
@@ -149,10 +150,12 @@ namespace Hotel_Management.ViewModels
                 if (CurrentPaiement.Id == 0)
                 {
                     _paiementDAO.AddPaiement(CurrentPaiement);
+                    SendConfirmationEmail(CurrentPaiement);
                 }
                 else
                 {
                     _paiementDAO.UpdatePaiement(CurrentPaiement);
+                    SendConfirmationEmail(CurrentPaiement);
                 }
 
                 _currentWindow?.Close();
@@ -178,6 +181,88 @@ namespace Hotel_Management.ViewModels
             {
                 MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SendConfirmationEmail(Payment payment)
+        {
+            MessageBox.Show(payment.Amount.ToString(), "Email Sent",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                var emailMessage = new EmailMessage
+                {
+                    To = SelectedReservation.Client.Email,
+                    Subject = "Hotel Reservation Confirmation",
+                    Body = $@"
+                        <html>
+                        <head>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    margin: 20px;
+                                    color: #333;
+                                    line-height: 1.6;
+                                }}
+                                h1 {{
+                                    color: #2ecc71;
+                                    text-align: center;
+                                }}
+                                .payment-details {{
+                                    margin: 20px 0;
+                                    padding: 15px;
+                                    border: 1px solid #ddd;
+                                    border-radius: 8px;
+                                    background-color: #f9f9f9;
+                                }}
+                                .payment-details h2 {{
+                                    margin-bottom: 10px;
+                                    color: #2d3748;
+                                }}
+                                .payment-details ul {{
+                                    list-style-type: none;
+                                    padding: 0;
+                                }}
+                                .payment-details li {{
+                                    margin: 5px 0;
+                                }}
+                                .footer {{
+                                    margin-top: 20px;
+                                    text-align: center;
+                                    font-size: 0.9em;
+                                    color: #777;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <h1>Confirmation de paiement</h1>
+                            <p>Cher/Chère {SelectedReservation.Client.FirstName} {SelectedReservation.Client.LastName},</p>
+                            <p>Nous vous remercions pour votre paiement. Voici les détails de la transaction :</p>
+                            <div class='payment-details'>
+                                <h2>Détails du paiement</h2>
+                                <ul>
+                                    <li><strong>Date du paiement :</strong> {payment.PaymentDate:dd/MM/yyyy}</li>
+                                    <li><strong>Montant payé :</strong> {payment.Amount:F2} MAD</li>
+                                    <li><strong>Méthode de paiement :</strong> {payment.PaymentMethod}</li>
+                                </ul>
+                            </div>
+                            <p>Nous vous confirmons que votre paiement a bien été reçu. Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter.</p>
+                            <div class='footer'>
+                                <p>À bientôt !</p>
+                                <p><em>L'équipe de gestion de l'hôtel</em></p>
+                            </div>
+                        </body>
+                        </html>
+                    "
+                };
+
+                EmailService.SendEmail(emailMessage);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to send confirmation email: {ex.Message}", "Email Error",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Don't throw - we don't want to interrupt the reservation process if email fails
             }
         }
         private void LoadData()

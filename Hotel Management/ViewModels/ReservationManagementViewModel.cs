@@ -79,8 +79,6 @@ namespace Hotel_Management.ViewModels
             _reservationDao = new ReservationDAO();
             _userDao = new UserDAO();
             _roomDao = new RoomDAO();
-
-
             LoadData();
 
             _allReservations = _reservationDao.GetAllReservations();
@@ -98,6 +96,7 @@ namespace Hotel_Management.ViewModels
 
         private void FilterReservations()
         {
+            _allReservations = Reservations.ToList();
             var filteredReservations = _allReservations.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchName))

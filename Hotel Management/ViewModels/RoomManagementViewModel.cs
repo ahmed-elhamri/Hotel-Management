@@ -57,6 +57,7 @@ namespace Hotel_Management.ViewModels
 
         private void FilterRooms()
         {
+            _allRooms = Rooms.ToList();
             var filteredRooms = _allRooms.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchName))

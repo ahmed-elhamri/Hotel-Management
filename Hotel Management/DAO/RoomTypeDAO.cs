@@ -22,6 +22,7 @@ namespace Hotel_Management.DAO
             return _context.RoomType.ToList();
         }
 
+
         public RoomType GetRoomTypeById(int id)
         {
             return _context.RoomType.FirstOrDefault(u => u.Id == id);
@@ -47,5 +48,26 @@ namespace Hotel_Management.DAO
                 _context.SaveChanges();
             }
         }
+        public Dictionary<string, (int ReservationCount, double TotalRevenue)> GetReservationsAndRevenueByRoomType()
+        {
+            return _context.RoomType
+                           .Select(rt => new
+                           {
+                               RoomTypeName = rt.Name,
+                               ReservationCount = _context.Reservation
+                                                          .Where(r => r.Room != null
+                                                                      && r.Room.RoomTypeId == rt.Id
+                                                                      && r.Status == ReservationStatus.Confirmed)
+                                                          .Count(),
+                               TotalRevenue = _context.Reservation
+                                                      .Where(r => r.Room != null
+                                                                  && r.Room.RoomTypeId == rt.Id
+                                                                  && r.Status == ReservationStatus.Confirmed)
+                                                      .Sum(r => r.TotalPrice) // Remplacez `TotalPrice` par le champ qui contient le prix total de la réservation
+                           })
+                           .ToDictionary(x => x.RoomTypeName, x => (x.ReservationCount, x.TotalRevenue));
+        }
+
+
     }
 }

@@ -36,6 +36,10 @@ namespace Hotel_Management.DAO
         {
             return _context.Users.Where(u => u.Role == UserRole.Employe).ToList();
         }
+        public int GetTotalUserCount()
+        {
+            return _context.Users.Where(u => u.Role == UserRole.Client).Count();
+        }
 
         public User GetUserById(int id)
         {

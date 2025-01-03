@@ -30,7 +30,23 @@ namespace Hotel_Management.DAO
             // Include RoomType without causing tracking issues
             return _context.Room.Include(r => r.RoomType).FirstOrDefault(u => u.Id == id);
         }
+        public List<Room> GetAvailableRooms()
+        {
+            return _context.Room.Where(r => r.IsAvailable == true).ToList();
+        }
+        public int GetAvailableRoomsCount()
+        {
+            // Nombre total de chambres
+            int totalRooms = _context.Room.Count();
 
+            // Nombre de chambres réservées avec un statut "Confirmed"
+            int reservedRooms = _context.Reservation
+                                        .Where(r => r.Status == ReservationStatus.Confirmed).Count();
+                                          // Si chaque réservation peut avoir plusieurs chambres
+
+            // Calcul des chambres disponibles
+            return totalRooms - reservedRooms;
+        }
         public void AddRoom(Room room)
         {
             // Only set the foreign key, not the navigation property

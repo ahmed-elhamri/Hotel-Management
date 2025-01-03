@@ -31,5 +31,10 @@ namespace Hotel_Management.Models
         [ForeignKey("RoomType")]
         public int RoomTypeId { get; set; }
         public RoomType RoomType { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

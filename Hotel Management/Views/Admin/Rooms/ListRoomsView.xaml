@@ -40,7 +40,7 @@
                 <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
                 <DataGridTextColumn Header="Capacité" Binding="{Binding Capacity}" Width="*" />
                 <DataGridTextColumn Header="Prix" Binding="{Binding Price}" Width="*" />
-                <DataGridTextColumn Header="Type de Chambre" Binding="{Binding RoomType.Name}" Width="*" />
+                <DataGridTextColumn Header="Type de Chambre" Binding="{Binding RoomType.Name, Mode=TwoWay}" Width="*" />
                 <DataGridTextColumn Header="Disponibilité" Binding="{Binding IsAvailable, Converter={StaticResource BooleanToYesNoConverter}}" Width="*" />
                 <DataGridTemplateColumn Header="Opérations" Width="150">
                     <DataGridTemplateColumn.CellTemplate>

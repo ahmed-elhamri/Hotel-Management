@@ -43,21 +43,27 @@ namespace Hotel_Management.DAO
 
         public void UpdateRoom(Room room)
         {
-            using (var freshContext = new DatabaseContext())
-            {
-                var existingRoom = freshContext.Room.Find(room.Id);
-                if (existingRoom != null)
-                {
-                    existingRoom.Name = room.Name;
-                    existingRoom.Capacity = room.Capacity;
-                    existingRoom.Price = room.Price;
-                    existingRoom.IsAvailable = room.IsAvailable;
-                    existingRoom.RoomTypeId = room.RoomType.Id; // Only use the ID
+            var existingRoom = _context.Room
+                .Include(r => r.RoomType)
+                .FirstOrDefault(r => r.Id == room.Id);
 
-                    freshContext.SaveChanges();
+            if (existingRoom != null)
+            {
+                existingRoom.Name = room.Name;
+                existingRoom.Capacity = room.Capacity;
+                existingRoom.Price = room.Price;
+                existingRoom.IsAvailable = room.IsAvailable;
+
+                // Update RoomType if changed
+                if (existingRoom.RoomTypeId != room.RoomType.Id)
+                {
+                    existingRoom.RoomTypeId = room.RoomType.Id;
                 }
+
+                _context.SaveChanges();
             }
         }
+
 
         public void ExportExcel(List<Room> rooms)
         {

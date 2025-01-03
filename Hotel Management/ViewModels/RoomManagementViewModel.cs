@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows;
 using Hotel_Management.Views.Admin.Rooms;
 using Hotel_Management.Data;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Hotel_Management.ViewModels
 {
@@ -21,12 +23,43 @@ namespace Hotel_Management.ViewModels
         private List<Room> _allRooms;
         private Window _currentWindow;
 
+
+
         public ObservableCollection<Room> Rooms { get; set; }
         public ObservableCollection<RoomType> RoomTypes { get; set; }
-        public Room CurrentRoom { get; set; }
+        private Room _currentRoom;
+        public Room CurrentRoom
+        {
+            get => _currentRoom;
+            set
+            {
+                _currentRoom = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public string SearchName { get; set; }
-        public RoomType SelectedRoomType { get; set; }
+        public string SearchName
+        {
+            get => _searchName;
+            set
+            {
+                _searchName = value;
+                OnPropertyChanged(); // Notifie l'interface utilisateur
+            }
+        }
+        private string _searchName;
+
+        public RoomType SelectedRoomType
+        {
+            get => _selectedRoomType;
+            set
+            {
+                _selectedRoomType = value;
+                OnPropertyChanged(); // Notifie l'interface utilisateur
+            }
+        }
+        private RoomType _selectedRoomType;
+
 
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
@@ -103,19 +136,41 @@ namespace Hotel_Management.ViewModels
                 return;
             }
 
-            if (CurrentRoom.Id == 0)
+            // Create a new Room instance for update to avoid reference issues
+            var roomToSave = new Room
             {
-                _roomDao.AddRoom(CurrentRoom);
-                Rooms.Add(CurrentRoom);
+                Id = CurrentRoom.Id,
+                Name = CurrentRoom.Name,
+                Capacity = CurrentRoom.Capacity,
+                Price = CurrentRoom.Price,
+                IsAvailable = CurrentRoom.IsAvailable,
+                RoomTypeId = CurrentRoom.RoomType.Id,
+                RoomType = RoomTypes.First(rt => rt.Id == CurrentRoom.RoomType.Id)
+            };
+
+            if (roomToSave.Id == 0)
+            {
+                _roomDao.AddRoom(roomToSave);
+                Rooms.Add(roomToSave);
             }
             else
             {
-                _roomDao.UpdateRoom(CurrentRoom);
-                var index = Rooms.IndexOf(Rooms.First(u => u.Id == CurrentRoom.Id));
-                Rooms[index] = CurrentRoom;
+                _roomDao.UpdateRoom(roomToSave);
+                var index = Rooms.IndexOf(Rooms.First(u => u.Id == roomToSave.Id));
+                Rooms[index] = roomToSave;
             }
 
+            // Refresh the rooms list to ensure proper references
+            _allRooms = _roomDao.GetAllRooms();
+            Rooms = new ObservableCollection<Room>(_allRooms);
+
             _currentWindow?.Close();
+            _allRooms = _roomDao.GetAllRooms();
+            Rooms.Clear();
+            foreach (var updatedRoom in _allRooms)
+            {
+                Rooms.Add(updatedRoom);
+            }
         }
 
         private string ValidateRoom()
@@ -148,6 +203,13 @@ namespace Hotel_Management.ViewModels
                 MessageBox.Show($"Error exporting to Excel: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

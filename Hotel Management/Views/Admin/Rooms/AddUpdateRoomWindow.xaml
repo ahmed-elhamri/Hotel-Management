@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Ajouter ou Modifier une Chambre" Width="450" WindowStartupLocation="CenterScreen"
-        Background="#f8f9fa">
+        Background="Azure">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -13,7 +13,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+        <!-- Titre avec un peu plus de marge -->
+        <TextBlock Text="Ajouter ou modifier une chambre" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" Foreground="#2c3e50"/>
+
+        <!-- Formulaire principal -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Grid.Row="1">
             <Label Content="Nom :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
             <TextBox Text="{Binding CurrentRoom.Name}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
@@ -33,7 +37,7 @@
                       FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#374151" Foreground="White" FontWeight="Bold" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

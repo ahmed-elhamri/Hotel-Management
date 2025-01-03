@@ -7,7 +7,7 @@
         xmlns:behaviors="clr-namespace:Hotel_Management.Behaviors"
         mc:Ignorable="d"
         Title="Add or Update Client" Width="450" WindowStartupLocation="CenterScreen"
-        Background="#f8f9fa" >
+        Background="Azure">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
@@ -17,6 +17,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <TextBlock Text="Ajouter ou modifier " FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#2c3e50"/>
         <!-- Form Section -->
         <StackPanel Grid.Row="1" VerticalAlignment="Center" Height="285" >
             <!-- First Name -->
@@ -47,7 +49,7 @@
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30">
-                <Button Content="Enregister" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+                <Button Content="Enregister" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#374151" Foreground="White" FontWeight="Bold" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

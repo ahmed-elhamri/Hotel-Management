@@ -9,40 +9,44 @@
 
     <Grid>
         <!-- Image de fond -->
-        <Image Source="/Views/image.jpg" 
-           Stretch="Fill" />
+        <Image Source="/Views/image.jpg" Stretch="Fill" />
 
         <!-- Overlay semi-transparent -->
-        <Grid Background="#80000000" Margin="50">
+        <Grid Background="#80000000" Margin="42,22,42,22">
             <!-- Contenu centré -->
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                <!-- Logo -->
+
                 <!-- Titre -->
-                <TextBlock Text="Authentification"
-                       FontSize="28" FontWeight="Bold" Foreground="White"
-                       HorizontalAlignment="Center" Margin="0,0,0,20" />
+                <!-- Logo -->
+                <Image Source="C:\Users\hp\Source\Repos\Hotel-Management\Hotel Management\Images\hotel-logo.png" 
+                       Height="80"/>
+
+                <!-- Titre -->
+              
 
                 <!-- Section Nom d'utilisateur -->
                 <StackPanel Margin="0,10">
                     <Label Content="Nom d'utilisateur" Foreground="White" FontSize="16" />
                     <TextBox x:Name="EmailTextBox"
-                         Height="40" FontSize="16" Padding="5"
-                         Background="#D3D3D3" BorderBrush="Gray" BorderThickness="1" />
+                             Height="40" FontSize="16" Padding="5"
+                             Background="#D3D3D3" BorderBrush="Gray" BorderThickness="1" />
                 </StackPanel>
 
                 <!-- Section Mot de passe -->
                 <StackPanel Margin="0,10">
                     <Label Content="Mot de passe" Foreground="White" FontSize="16" />
                     <PasswordBox x:Name="PasswordBox"
-                             Height="40" FontSize="16" Padding="5"
-                             Background="#D3D3D3" BorderBrush="Gray" BorderThickness="1" />
+                                 Height="40" FontSize="16" Padding="5"
+                                 Background="#D3D3D3" BorderBrush="Gray" BorderThickness="1" />
                 </StackPanel>
 
                 <!-- Bouton de connexion -->
                 <Button Content="Se connecter"
-                    Height="40" FontSize="16"
-                    Background="#4CAF50" Foreground="White"
-                    BorderThickness="0" Margin="0,20,0,0"
-                    Click="LoginButton_Click" />
+                        Height="40" FontSize="16"
+                        Background="#374151" Foreground="White"
+                        BorderThickness="0" Margin="0,20,0,0"
+                        Click="LoginButton_Click" />
             </StackPanel>
         </Grid>
     </Grid>

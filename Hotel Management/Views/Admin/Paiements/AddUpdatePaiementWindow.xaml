@@ -4,15 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ajouter/Mettre à jour un paiement" Height="450" Width="439">
+        Title="Ajouter/Mettre à jour un paiement" Height="450" Width="439"
+        Background="Azure">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
+        <TextBlock Text="Ajouter ou modifier un Paiement" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#2c3e50"/>
         <!-- Formulaire principal -->
-        <StackPanel VerticalAlignment="Top" Grid.Row="0" Margin="0,5">
+        <StackPanel VerticalAlignment="Top" Grid.Row="0" Margin="0,49,0,0" Height="213">
             <!-- Réservation -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="Réservation :" FontSize="14" FontWeight="Bold" Width="120" VerticalAlignment="Center"/>
@@ -55,7 +56,16 @@
 
         <!-- Boutons -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,170,0,30" Width="148">
-            <Button Content="Enregister" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Enregister" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2c3e50" Foreground="White" FontWeight="Bold">
+                <UIElement.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </UIElement.RenderTransform>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

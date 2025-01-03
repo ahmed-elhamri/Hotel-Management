@@ -19,6 +19,7 @@ namespace Hotel_Management.ViewModels
         private readonly RoomDAO _roomDao;
         private readonly RoomTypeDAO _roomTypeDao;
         private List<Room> _allRooms;
+        
         private Window _currentWindow;
 
         public ObservableCollection<Room> Rooms { get; set; }
@@ -41,7 +42,6 @@ namespace Hotel_Management.ViewModels
         {
             _roomDao = new RoomDAO();
             _roomTypeDao = new RoomTypeDAO();
-
 
             RoomTypes = new ObservableCollection<RoomType>(_roomTypeDao.GetAllRoomTypes());
             _allRooms = _roomDao.GetAllRooms(); // Store all rooms

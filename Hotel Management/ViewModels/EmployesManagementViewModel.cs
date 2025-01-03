@@ -104,6 +104,7 @@ namespace Hotel_Management.ViewModels
             }
             _userDao.DeleteUser(user);
             Users.Remove(user);
+            LoadUsers();
         }
 
         private void FilterUsers()

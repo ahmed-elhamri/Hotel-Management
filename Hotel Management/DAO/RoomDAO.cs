@@ -65,15 +65,16 @@ namespace Hotel_Management.DAO
                     existingRoom.Capacity = room.Capacity;
                     existingRoom.Price = room.Price;
                     existingRoom.IsAvailable = room.IsAvailable;
-                    existingRoom.RoomTypeId = room.RoomType.Id; 
-
-                // Update RoomType if changed
-                if (existingRoom.RoomTypeId != room.RoomType.Id)
-                {
                     existingRoom.RoomTypeId = room.RoomType.Id;
-                }
 
-                _context.SaveChanges();
+                    // Update RoomType if changed
+                    if (existingRoom.RoomTypeId != room.RoomType.Id)
+                    {
+                        existingRoom.RoomTypeId = room.RoomType.Id;
+                    }
+
+                    _context.SaveChanges();
+                }
             }
         }
 

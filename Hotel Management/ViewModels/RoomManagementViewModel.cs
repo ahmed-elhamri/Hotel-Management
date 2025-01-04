@@ -61,9 +61,9 @@ namespace Hotel_Management.ViewModels
         }
         private RoomType _selectedRoomType;
 
-        public string SearchName { get; set; }
+        //public string SearchName { get; set; }
         
-        public RoomType SelectedRoomType { get; set; }
+        //public RoomType SelectedRoomType { get; set; }
 
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }

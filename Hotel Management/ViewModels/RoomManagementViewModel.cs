@@ -21,6 +21,7 @@ namespace Hotel_Management.ViewModels
         private readonly RoomDAO _roomDao;
         private readonly RoomTypeDAO _roomTypeDao;
         private List<Room> _allRooms;
+        
         private Window _currentWindow;
 
 
@@ -60,6 +61,9 @@ namespace Hotel_Management.ViewModels
         }
         private RoomType _selectedRoomType;
 
+        public string SearchName { get; set; }
+        
+        public RoomType SelectedRoomType { get; set; }
 
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
@@ -74,9 +78,8 @@ namespace Hotel_Management.ViewModels
             _roomDao = new RoomDAO();
             _roomTypeDao = new RoomTypeDAO();
 
-
             RoomTypes = new ObservableCollection<RoomType>(_roomTypeDao.GetAllRoomTypes());
-            _allRooms = _roomDao.GetAllRooms(); // Store all rooms
+            _allRooms = _roomDao.GetAllRooms(); 
             Rooms = new ObservableCollection<Room>(_allRooms);
 
             AddCommand = new RelayCommand(_ => OpenPopup(new Room { IsAvailable = true }));
@@ -89,6 +92,7 @@ namespace Hotel_Management.ViewModels
 
         private void FilterRooms()
         {
+            
             var filteredRooms = _allRooms.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchName))

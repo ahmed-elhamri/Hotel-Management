@@ -36,6 +36,10 @@ namespace Hotel_Management.DAO
         {
             return _context.Users.Where(u => u.Role == UserRole.Employe).ToList();
         }
+        public int GetTotalUserCount()
+        {
+            return _context.Users.Where(u => u.Role == UserRole.Client).Count();
+        }
 
         public User GetUserById(int id)
         {
@@ -74,14 +78,14 @@ namespace Hotel_Management.DAO
         {
             try
             {
-                // Set EPPlus license context
+               
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Reservations");
 
-                    // Add headers
+                    
                     worksheet.Cells[1, 1].Value = "Employe ID";
                     worksheet.Cells[1, 2].Value = "FirstName";
                     worksheet.Cells[1, 3].Value = "LastName";
@@ -89,7 +93,7 @@ namespace Hotel_Management.DAO
                     worksheet.Cells[1, 5].Value = "Email";
          
 
-                    // Style the header
+                    
                     using (var headerRange = worksheet.Cells[1, 1, 1, 5])
                     {
                         headerRange.Style.Font.Bold = true;
@@ -97,7 +101,7 @@ namespace Hotel_Management.DAO
                         headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                     }
 
-                    // Add data
+                    
                     int row = 2;
                     foreach (var user in users)
                     {
@@ -110,10 +114,10 @@ namespace Hotel_Management.DAO
                         row++;
                     }
 
-                    // Auto-fit columns
+                    
                     worksheet.Cells.AutoFitColumns();
 
-                    // Create save file dialog
+                    
                     SaveFileDialog saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel Files (*.xlsx)|*.xlsx",
@@ -123,7 +127,7 @@ namespace Hotel_Management.DAO
 
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        // Save the file
+                        
                         File.WriteAllBytes(saveFileDialog.FileName, package.GetAsByteArray());
                     }
                 }

@@ -26,6 +26,28 @@ namespace Hotel_Management.Views
             DataContext = new MainViewModel();
         }
 
+        private void CloseWindow_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close(); 
+        }
+
+        private void MinimizeWindow_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized; 
+        }
+
+        private void MaximizeRestoreWindow_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal; 
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized; 
+            }
+        }
+
         private void Deconnexion_Click(object sender, RoutedEventArgs e)
         {
                 var loginView = new LoginView();

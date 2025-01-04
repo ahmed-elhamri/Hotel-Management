@@ -36,7 +36,7 @@ namespace Hotel_Management.ViewModels
         public MainViewModel()
         {
             NavigateCommand = new RelayCommand(ExecuteNavigateCommand);
-            CurrentView = new DashboardView(); // Default view
+            CurrentView = new DashboardView(); 
         }
 
         private void ExecuteNavigateCommand(object viewName)

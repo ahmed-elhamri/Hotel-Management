@@ -35,7 +35,7 @@ namespace Hotel_Management.Models
         public Double Amount { get; set; }
 
         [Required]
-        public PMethod PaymentMethod { get; set; } // E.g., "Credit Card", "Cash"
+        public PMethod PaymentMethod { get; set; } 
 
         [Required]
         public PaymentStatus Status { get; set; }

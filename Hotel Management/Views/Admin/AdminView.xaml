@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hotel_Management.Views"
         mc:Ignorable="d"
+        Icon="../hotel-mini-logo.png"
         Title="Hotel Management" Width="900" WindowStartupLocation="CenterScreen"
         Background="#F3F4F6" d:DesignHeight="551.66" Height="600"
         ResizeMode="NoResize">
@@ -16,37 +17,52 @@
         </Grid.RowDefinitions>
 
         <!-- Top Bar -->
-        <Border Grid.Row="0" Background="#4CAF50">
-            <TextBlock Text="Gestion de Réservations" FontSize="20" FontWeight="Bold" Foreground="White" Margin="20,0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Border Grid.Row="0" Background="#374151">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <!-- Logo -->
+                <Image Source="../hotel-logo.png" 
+                       Height="52" Width="178" />
+                <!-- Logo -->
+                <!-- Logo -->
+            </StackPanel>
         </Border>
 
         <!-- Main Content Area with Sidebar -->
         <Grid Grid.Row="1" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="231" />
+                <ColumnDefinition Width="62" />
+                <ColumnDefinition Width="169"/>
                 <ColumnDefinition Width="1" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar -->
-            <Border Grid.Column="0" Background="#2E2E2E">
-                <StackPanel VerticalAlignment="Top">
-                    <TextBlock Text="Menu" FontSize="18" FontWeight="Bold" Foreground="White" Margin="10" HorizontalAlignment="Center" />
-                    <Button x:Name="DashboardBtn" Content="🏠 Tableau de Bord" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="DashboardView"/>
-                    <Button x:Name="ListEmployesBtn" Content="👤 Liste des Employes" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListEmployesView" />
-                    <Button x:Name="ListClientsBtn" Content="👤 Liste des Clients" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListClientsView" />
-                    <Button x:Name="ListRoomTypeBtn" Content="🏷️ Liste des Catégories" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomTypeView"/>
-                    <Button x:Name="ListRoomsBtn" Content="🏢 Liste des Chambres" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
-                    <Button x:Name="ListReservationsBtn" Content="📅 Liste des Réservations" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListReservationsView"/>
-                    <Button x:Name="ListPaymentBtn" Content="💳 Liste des Paiements" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Command="{Binding NavigateCommand}" CommandParameter="ListPaiementView" />
-                    <Button Content="🚪 Déconnexion" FontSize="16" Background="Transparent" Foreground="White" Margin="10,5" Padding="10" Click="Deconnexion_Click" />
+            <Border Grid.Column="0" Background="#1E293B" Padding="10" Grid.ColumnSpan="2">
+                <StackPanel>
+                    <TextBlock Text="Menu" Foreground="White" FontSize="18" FontWeight="Bold" Margin="10,30,0,20" />
+                    <Button Content="🏠 Tableau de Bord" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="DashboardView" />
+                    <Button Content="👤 Liste des Employés" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListEmployesView" />
+                    <Button Content="👤 Liste des Clients" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListClientsView" />
+                    <Button Content="🏷️ Liste des Catégories" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListRoomTypeView" />
+                    <Button Content="🏢 Liste des Chambres" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListRoomsView" />
+                    <Button Content="📅 Liste des Réservations" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListReservationsView" />
+                    <Button Content="💳 Liste des Paiements" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Command="{Binding NavigateCommand}" CommandParameter="ListPaiementView" />
+                    <Button Content="🚪 Déconnexion" Background="#374151" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                 Margin="0,5" Padding="15,10" BorderBrush="Transparent" Cursor="Hand" Click="Deconnexion_Click" />
                 </StackPanel>
             </Border>
 
             <!-- Splitter -->
 
             <!-- Content Area -->
-            <ContentControl Grid.Column="2" Content="{Binding CurrentView}" />
+            <ContentControl Grid.Column="3" Content="{Binding CurrentView}" />
         </Grid>
 
         <!-- Status Bar -->

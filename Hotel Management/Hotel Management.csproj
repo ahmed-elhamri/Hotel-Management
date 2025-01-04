@@ -10,7 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\hotel-logo.png" />
+    <None Remove="Views\hotel-mini-logo.png" />
     <None Remove="Views\image.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\hotel-logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +25,7 @@
     <PackageReference Include="CryptSharpOfficial" Version="2.1.0" />
     <PackageReference Include="EPPlus" Version="7.5.2" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
@@ -33,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Views\hotel-mini-logo.png" />
     <Resource Include="Views\image.jpg" />
   </ItemGroup>
 

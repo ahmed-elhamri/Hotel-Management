@@ -21,21 +21,34 @@ namespace Hotel_Management.DAO
 
         public List<Room> GetAllRooms()
         {
-            // Fetch Rooms and include the RoomType properly
+            
             return _context.Room.Include(r => r.RoomType).ToList();
         }
 
         public Room GetRoomById(int id)
         {
-            // Include RoomType without causing tracking issues
+            
             return _context.Room.Include(r => r.RoomType).FirstOrDefault(u => u.Id == id);
         }
+        public List<Room> GetAvailableRooms()
+        {
+            return _context.Room.Where(r => r.IsAvailable == true).ToList();
+        }
+        public int GetAvailableRoomsCount()
+        {
+            
+            int totalRooms = _context.Room.Count();
 
+            int reservedRooms = _context.Reservation
+                                        .Where(r => r.Status == ReservationStatus.Confirmed).Count();
+
+            return totalRooms - reservedRooms;
+        }
         public void AddRoom(Room room)
         {
-            // Only set the foreign key, not the navigation property
+            
             room.RoomTypeId = room.RoomType.Id;
-            room.RoomType = null;  // Clear the navigation property
+            room.RoomType = null;  
 
             _context.Room.Add(room);
             _context.SaveChanges();
@@ -43,16 +56,16 @@ namespace Hotel_Management.DAO
 
         public void UpdateRoom(Room room)
         {
-            var existingRoom = _context.Room
-                .Include(r => r.RoomType)
-                .FirstOrDefault(r => r.Id == room.Id);
-
-            if (existingRoom != null)
+            using (var freshContext = new DatabaseContext())
             {
-                existingRoom.Name = room.Name;
-                existingRoom.Capacity = room.Capacity;
-                existingRoom.Price = room.Price;
-                existingRoom.IsAvailable = room.IsAvailable;
+                var existingRoom = freshContext.Room.Find(room.Id);
+                if (existingRoom != null)
+                {
+                    existingRoom.Name = room.Name;
+                    existingRoom.Capacity = room.Capacity;
+                    existingRoom.Price = room.Price;
+                    existingRoom.IsAvailable = room.IsAvailable;
+                    existingRoom.RoomTypeId = room.RoomType.Id; 
 
                 // Update RoomType if changed
                 if (existingRoom.RoomTypeId != room.RoomType.Id)
@@ -69,14 +82,14 @@ namespace Hotel_Management.DAO
         {
             try
             {
-                // Set EPPlus license context
+                
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Reservations");
 
-                    // Add headers
+                    
                     worksheet.Cells[1, 1].Value = "Room ID";
                     worksheet.Cells[1, 2].Value = "Room Name";
                     worksheet.Cells[1, 3].Value = "Room Capacity";
@@ -85,7 +98,7 @@ namespace Hotel_Management.DAO
                     worksheet.Cells[1, 6].Value = "RoomType";
                     
 
-                    // Style the header
+                    
                     using (var headerRange = worksheet.Cells[1, 1, 1, 6])
                     {
                         headerRange.Style.Font.Bold = true;
@@ -93,7 +106,7 @@ namespace Hotel_Management.DAO
                         headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                     }
 
-                    // Add data
+                    
                     int row = 2;
                     foreach (var room in rooms)
                     {
@@ -107,10 +120,10 @@ namespace Hotel_Management.DAO
                         row++;
                     }
 
-                    // Auto-fit columns
+                    
                     worksheet.Cells.AutoFitColumns();
 
-                    // Create save file dialog
+                    
                     SaveFileDialog saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel Files (*.xlsx)|*.xlsx",
@@ -120,7 +133,7 @@ namespace Hotel_Management.DAO
 
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        // Save the file
+                        
                         File.WriteAllBytes(saveFileDialog.FileName, package.GetAsByteArray());
                     }
                 }

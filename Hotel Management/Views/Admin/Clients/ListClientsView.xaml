@@ -45,7 +45,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="➕ Ajouter un employé" Background="#4CAF50" Foreground="White" FontSize="16"
+        <Button Content="➕ Ajouter un client" Background="#4CAF50" Foreground="White" FontSize="16"
         Cursor="Hand" Margin="238,400,217,10" Command="{Binding AddCommand}" />
 
     </Grid>

@@ -4,16 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ajouter ou Modifier un Type de Chambre" Width="450" WindowStartupLocation="CenterScreen"
-        Background="#f8f9fa" d:DesignHeight="289.04">
+        Icon="../../hotel-mini-logo.png"
+        Title="Ajouter ou Modifier une categorie" Width="449" WindowStartupLocation="CenterScreen"
+        Background="Azure" Height="339">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="300">
+        <TextBlock Text="Ajouter ou modifier une catégorie" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,10,10" Foreground="#2c3e50"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Margin="0,37,0,0" Grid.RowSpan="2">
             <!-- Nom du type de chambre -->
             <Label Content="Nom :" FontSize="14" FontWeight="Bold" Margin="0,5"/>
             <TextBox Text="{Binding CurrentRoomType.Name}" FontSize="14" Padding="5" BorderBrush="#3498db" BorderThickness="1" Width="300"/>
@@ -24,7 +25,7 @@
 
             <!-- Boutons de sauvegarde et d'annulation -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2ecc71" Foreground="White" FontWeight="Bold" Margin="5"/>
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Width="120" Height="40" Background="#2c3e50" Foreground="White" FontWeight="Bold" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

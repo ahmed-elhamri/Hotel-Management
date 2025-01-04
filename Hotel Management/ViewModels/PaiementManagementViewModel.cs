@@ -63,11 +63,11 @@ namespace Hotel_Management.ViewModels
 
             LoadData();
 
-            // Charger les énumérations
+            
             PaymentMethods = new ObservableCollection<PMethod>((PMethod[])Enum.GetValues(typeof(PMethod)));
             PaymentStatuses = new ObservableCollection<PaymentStatus>((PaymentStatus[])Enum.GetValues(typeof(PaymentStatus)));
 
-            // Initialiser les commandes
+            
             AddCommand = new RelayCommand(_ => OpenPopup(new Payment()));
             UpdateCommand = new RelayCommand(paiement => OpenPopup((Payment)paiement));
             DeleteCommand = new RelayCommand(paiement => DeletePaiement((Payment)paiement));
@@ -77,7 +77,7 @@ namespace Hotel_Management.ViewModels
 
         private void OpenPopup(Payment paiement)
         {
-            if (paiement.Id == 0) // Nouveau paiement
+            if (paiement.Id == 0) 
             {
                 CurrentPaiement = new Payment
                 {
@@ -93,7 +93,7 @@ namespace Hotel_Management.ViewModels
                     CurrentPaiement.ReservationId = SelectedReservation.Id;
                 }
             }
-            else // Modification
+            else 
             {
                 CurrentPaiement = new Payment
                 {
@@ -160,7 +160,7 @@ namespace Hotel_Management.ViewModels
 
                 _currentWindow?.Close();
 
-                // Rafraîchir la liste
+                
                 var newPayments = _paiementDAO.GetAllPaiement();
                 Payments = new ObservableCollection<Payment>(newPayments);
                 OnPropertyChanged(nameof(Payments));
@@ -262,7 +262,7 @@ namespace Hotel_Management.ViewModels
             {
                 MessageBox.Show($"Failed to send confirmation email: {ex.Message}", "Email Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
-                // Don't throw - we don't want to interrupt the reservation process if email fails
+                
             }
         }
         private void LoadData()

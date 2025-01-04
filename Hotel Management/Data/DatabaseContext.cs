@@ -24,7 +24,7 @@ namespace Hotel_Management.Data
         {
             optionsBuilder.UseMySql("Server=localhost;Database=hotel_management;User=root;Password=;",
                 new MySqlServerVersion(new Version(8, 0, 27)));
-            optionsBuilder.EnableSensitiveDataLogging();// Adjust the MySQL version
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace Hotel_Management.Data
                     LastName = "admin",
                     PhoneNumber = "0600000000",
                     Email = "admin@hotel.com",
-                    Password = BCrypt.Net.BCrypt.HashPassword("admin@123"), // Replace with hashed password in real apps
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin@123"), 
                     Role = UserRole.Admin
                 }
 

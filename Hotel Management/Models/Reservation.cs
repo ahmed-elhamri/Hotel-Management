@@ -21,7 +21,7 @@ namespace Hotel_Management.Models
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User Client { get; set; } // Assuming a User class exists
+        public User Client { get; set; } 
 
         [ForeignKey("Room")]
         public int RoomId { get; set; }

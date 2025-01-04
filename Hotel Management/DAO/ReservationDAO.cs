@@ -63,10 +63,10 @@ namespace Hotel_Management.DAO
 
                     if (existingReservation != null)
                     {
-                        // Store the old room ID before updating
-                        //int oldRoomId = existingReservation.RoomId;
+                        
+                        
 
-                        // Update reservation details
+                        
                         existingReservation.UserId = reservation.Client.Id;
                         existingReservation.RoomId = reservation.Room.Id;
                         existingReservation.CheckInDate = reservation.CheckInDate;
@@ -74,17 +74,7 @@ namespace Hotel_Management.DAO
                         existingReservation.TotalPrice = reservation.TotalPrice;
                         existingReservation.Status = reservation.Status;
 
-                        // Update rooms' availability using the same context
-                        //var newRoom = newContext.Room.Find(reservation.Room.Id);
-                        //var oldRoom = newContext.Room.Find(oldRoomId);
-
-                        //if (newRoom != null && oldRoom != null && oldRoomId != reservation.Room.Id)
-                        //{
-                        //    newRoom.IsAvailable = false;
-                        //    oldRoom.IsAvailable = true;
-                        //}
-
-                        // Save all changes at once
+                        
                         newContext.SaveChanges();
                     }
                 }
@@ -114,12 +104,7 @@ namespace Hotel_Management.DAO
                 _context.SaveChanges();
 
                 
-                //var room = _context.Room.Find(reservation.Room.Id);
-                //if (room != null)
-                //{
-                //    room.IsAvailable = false;
-                //    _context.SaveChanges();
-                //}
+                
 
                
 
@@ -135,14 +120,14 @@ namespace Hotel_Management.DAO
         {
             try
             {
-                // Set EPPlus license context
+                
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Reservations");
 
-                    // Add headers
+                    
                     worksheet.Cells[1, 1].Value = "Reservation ID";
                     worksheet.Cells[1, 2].Value = "Client Name";
                     worksheet.Cells[1, 3].Value = "Room Number";
@@ -151,7 +136,7 @@ namespace Hotel_Management.DAO
                     worksheet.Cells[1, 6].Value = "Total Price";
                     worksheet.Cells[1, 7].Value = "Status";
 
-                    // Style the header
+                    
                     using (var headerRange = worksheet.Cells[1, 1, 1, 7])
                     {
                         headerRange.Style.Font.Bold = true;
@@ -159,7 +144,7 @@ namespace Hotel_Management.DAO
                         headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                     }
 
-                    // Add data
+                    
                     int row = 2;
                     foreach (var reservation in reservations)
                     {
@@ -174,10 +159,10 @@ namespace Hotel_Management.DAO
                         row++;
                     }
 
-                    // Auto-fit columns
+                    
                     worksheet.Cells.AutoFitColumns();
 
-                    // Create save file dialog
+                    
                     SaveFileDialog saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel Files (*.xlsx)|*.xlsx",
@@ -187,7 +172,7 @@ namespace Hotel_Management.DAO
 
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        // Save the file
+                        
                         File.WriteAllBytes(saveFileDialog.FileName, package.GetAsByteArray());
                     }
                 }
@@ -215,13 +200,7 @@ namespace Hotel_Management.DAO
                         _context.Reservation.Remove(reservationToDelete);
                         _context.SaveChanges();
 
-                        // Update the room's availability
-                        //var room = _context.Room.Find(reservation.Room.Id);
-                        //if (room != null)
-                        //{
-                        //    room.IsAvailable = true;
-                        //    _context.SaveChanges();
-                        //}
+                       
                     }
                 }
             }
@@ -251,43 +230,43 @@ namespace Hotel_Management.DAO
 
                         document.Open();
 
-                        // Ajouter le logo/en-tête de l'hôtel
+                        
                         document.Add(new Paragraph("HOTEL MANAGEMENT SYSTEM"));
                         document.Add(new Paragraph("Bon de Réservation") { Alignment = Element.ALIGN_CENTER });
                         document.Add(new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator())));
                         document.Add(new Paragraph("\n"));
 
-                        // Détails de la réservation
+                        
                         document.Add(new Paragraph($"Référence de Réservation : #{reservation.Id}"));
                         document.Add(new Paragraph($"Date : {DateTime.Now:dd/MM/yyyy}"));
                         document.Add(new Paragraph("\n"));
 
-                        // Informations sur le client
+                        
                         document.Add(new Paragraph("Informations sur le Client", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
                         document.Add(new Paragraph($"Nom : {reservation.Client.FirstName} {reservation.Client.LastName}"));
                         document.Add(new Paragraph($"Email : {reservation.Client.Email}"));
                         document.Add(new Paragraph($"Téléphone : {reservation.Client.PhoneNumber}"));
                         document.Add(new Paragraph("\n"));
 
-                        // Détails de la réservation
+                        
                         document.Add(new Paragraph("Détails de la Réservation", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
                         document.Add(new Paragraph($"Date d'Arrivée : {reservation.CheckInDate:dd/MM/yyyy}"));
                         document.Add(new Paragraph($"Date de Départ : {reservation.CheckOutDate:dd/MM/yyyy}"));
                         document.Add(new Paragraph($"Nombre de Nuits : {(reservation.CheckOutDate - reservation.CheckInDate).Days}"));
                         document.Add(new Paragraph("\n"));
 
-                        // Informations sur la chambre
+                        
                         document.Add(new Paragraph("Informations sur la Chambre", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
                         document.Add(new Paragraph($"Numéro de Chambre : {reservation.Room.Id}"));
                         document.Add(new Paragraph($"Type de Chambre : {reservation.Room.RoomType?.Name ?? "Standard"}"));
                         document.Add(new Paragraph("\n"));
 
-                        // Détails du paiement
+                        
                         document.Add(new Paragraph("Informations sur le Paiement", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
                         document.Add(new Paragraph($"Montant Total : {reservation.TotalPrice:F2} MAD"));
                         document.Add(new Paragraph("\n"));
 
-                        // Termes et conditions
+                        
                         document.Add(new Paragraph("Termes et Conditions", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
                         document.Add(new Paragraph("1. L'heure d'arrivée est fixée à 14h00 et l'heure de départ à 12h00."));
                         document.Add(new Paragraph("2. Veuillez présenter ce bon lors de votre arrivée."));
@@ -307,10 +286,10 @@ namespace Hotel_Management.DAO
         {
             try
             {
-                // Get all rooms first
+                
                 var allRooms = _context.Room.Include(r => r.RoomType).ToList();
 
-                // Get reservations that overlap with the requested dates
+                
                 var overlappingReservations = _context.Reservation
                     .Where(r => r.Status != ReservationStatus.Cancelled &&
                                ((r.CheckInDate <= checkIn && r.CheckOutDate > checkIn) ||
@@ -320,7 +299,7 @@ namespace Hotel_Management.DAO
                     .Distinct()
                     .ToList();
 
-                // Filter out rooms that have overlapping reservations
+                
                 return allRooms.Where(r => !overlappingReservations.Contains(r.Id)).ToList();
             }
             catch (Exception ex)

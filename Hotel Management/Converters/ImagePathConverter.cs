@@ -42,7 +42,7 @@ namespace Hotel_Management.Converters
             }
             catch (Exception)
             {
-                // If there's any error loading the image, return the default image
+                
                 return new BitmapImage(new Uri(_defaultImagePath));
             }
         }

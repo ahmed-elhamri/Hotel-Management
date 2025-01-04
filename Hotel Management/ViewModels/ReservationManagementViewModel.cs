@@ -46,7 +46,7 @@ namespace Hotel_Management.ViewModels
                 OnPropertyChanged(nameof(AvailableRooms));
             }
         }
-        //public event PropertyChangedEventHandler PropertyChanged;
+        
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -96,7 +96,7 @@ namespace Hotel_Management.ViewModels
 
         private void FilterReservations()
         {
-            _allReservations = Reservations.ToList();
+            
             var filteredReservations = _allReservations.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchName))
@@ -126,48 +126,7 @@ namespace Hotel_Management.ViewModels
         }
 
 
-        //private void FilterReservations()
-        //{
-        //    _allReservations = Reservations.ToList();
-        //    var filteredReservations = _allReservations.AsQueryable();
-        //    string selectedStatus = (orderCombobox as ComboBoxItem)?.Content?.ToString();
-        //    bool hasSearchTerm = !string.IsNullOrWhiteSpace(SearchName);
-        //    bool hasStatusFilter = selectedStatus != null && selectedStatus != "All";
-
-        //    // Case 1: Both search term and status filter
-        //    if (hasSearchTerm && hasStatusFilter)
-        //    {
-        //        filteredReservations = filteredReservations.Where(r =>
-        //            ((r.Client.FirstName + " " + r.Client.LastName).Contains(SearchName, StringComparison.OrdinalIgnoreCase) ||
-        //             r.Room.Name.ToString().Contains(SearchName, StringComparison.OrdinalIgnoreCase)) &&
-        //            r.Status.ToString().Equals(selectedStatus, StringComparison.OrdinalIgnoreCase)
-        //        );
-        //    }
-        //    // Case 2: Only search term
-        //    else if (hasSearchTerm)
-        //    {
-        //        filteredReservations = filteredReservations.Where(r =>
-        //            (r.Client.FirstName + " " + r.Client.LastName).Contains(SearchName, StringComparison.OrdinalIgnoreCase) ||
-        //            r.Room.Name.ToString().Contains(SearchName, StringComparison.OrdinalIgnoreCase)
-        //        );
-        //    }
-        //    // Case 3: Only status filter
-        //    else if (hasStatusFilter)
-        //    {
-        //        filteredReservations = filteredReservations.Where(r =>
-        //            r.Status.ToString().Equals(selectedStatus, StringComparison.OrdinalIgnoreCase)
-        //        );
-        //    }
-        //    // Case 4: No filters - show all
-        //    // (This happens automatically since we start with _allReservations)
-
-        //    // Update the observable collection
-        //    Reservations.Clear();
-        //    foreach (var reservation in filteredReservations)
-        //    {
-        //        Reservations.Add(reservation);
-        //    }
-        //}
+        
 
         private void LoadData()
         {
@@ -199,56 +158,18 @@ namespace Hotel_Management.ViewModels
                 CurrentReservation.CheckInDate != default &&
                 CurrentReservation.CheckOutDate != default)
             {
-                // Calculer le nombre de jours
+               
                 int numberOfDays = (int)(CurrentReservation.CheckOutDate - CurrentReservation.CheckInDate).TotalDays;
 
-                // Calculer le prix total
+                
                 CurrentReservation.TotalPrice = CurrentReservation.Room.Price * numberOfDays;
 
-                // Notifier le changement
+                
                 OnPropertyChanged(nameof(CurrentReservation));
             }
         }
 
-        //private void OpenPopup(Reservation reservation)
-        //{
-        //    if (reservation.Id == 0)
-        //    {
-        //        _tempReservation = new Reservation
-        //        {
-        //            CheckInDate = DateTime.Today,
-        //            CheckOutDate = DateTime.Today.AddDays(1),
-        //            Status = ReservationStatus.Pending,
-        //            TotalPrice = 0
-        //        };
-        //        CurrentReservation = _tempReservation;
-        //    }
-        //    else
-        //    {
-        //        // Create a deep copy of the reservation
-        //        _tempReservation = new Reservation
-        //        {
-        //            Id = reservation.Id,
-        //            UserId = reservation.UserId,
-        //            Client = reservation.Client,
-        //           //i wanna the client name
-        //            RoomId = reservation.RoomId,
-        //            Room = reservation.Room,
-        //            //i wanna the Room name
-        //            CheckInDate = reservation.CheckInDate,
-        //            CheckOutDate = reservation.CheckOutDate,
-        //            TotalPrice = reservation.TotalPrice,
-        //            Status = reservation.Status
-        //        };
-        //        CurrentReservation = _tempReservation;
-        //    }
-
-        //    UpdateAvailableRooms();
-        //    CalculateTotalPrice();
-
-        //    _currentWindow = new AddUpdateReservationWindow { DataContext = this };
-        //    _currentWindow.ShowDialog();
-        //}
+        
 
         private void OpenPopup(Reservation reservation)
         {
@@ -265,18 +186,18 @@ namespace Hotel_Management.ViewModels
             }
             else
             {
-                // Get the objects from your ObservableCollections to ensure reference matching
+                
                 var selectedClient = Users.FirstOrDefault(u => u.Id == reservation.UserId);
-                //var selectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId);
+                
 
-                // Create a deep copy of the reservation with the correct references
+                
                 _tempReservation = new Reservation
                 {
                     Id = reservation.Id,
                     UserId = reservation.UserId,
-                    Client = selectedClient ?? reservation.Client,  // Use the client from Users collection
+                    Client = selectedClient ?? reservation.Client,  
                     RoomId = reservation.RoomId,
-                    Room = reservation.Room,     // Use the room from Rooms collection
+                    Room = reservation.Room,     
                     CheckInDate = reservation.CheckInDate,
                     CheckOutDate = reservation.CheckOutDate,
                     TotalPrice = reservation.TotalPrice,
@@ -319,17 +240,7 @@ namespace Hotel_Management.ViewModels
                     MessageBox.Show("Reservation added successfully!", "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    //try
-                    //{
-                    //    _reservationDao.ExportReservationToPdf(CurrentReservation);
-                    //}
-                    //catch (Exception pdfEx)
-                    //{
-                    //    MessageBox.Show($"Reservation was saved but there was an error generating the PDF: {pdfEx.Message}",
-                    //        "PDF Generation Error",
-                    //        MessageBoxButton.OK,
-                    //        MessageBoxImage.Warning);
-                    //}
+                   
                 }
                 else
                 {
@@ -342,12 +253,7 @@ namespace Hotel_Management.ViewModels
                 }
 
                 
-                //var updatedList = _reservationDao.GetAllReservations();
-                //Reservations.Clear();
-                //foreach (var res in updatedList)
-                //{
-                //    Reservations.Add(res);
-                //}
+                
 
                 _currentWindow?.Close();
             }
@@ -386,7 +292,7 @@ namespace Hotel_Management.ViewModels
             }
         }
 
-        // Mettez à jour les méthodes de changement de date
+        
         public void OnCheckInDateChanged()
         {
             UpdateAvailableRooms();
@@ -399,7 +305,7 @@ namespace Hotel_Management.ViewModels
             CalculateTotalPrice();
         }
 
-        // Ajoutez cette méthode pour gérer le changement de chambre
+        
         public void OnRoomChanged()
         {
             CalculateTotalPrice();
@@ -487,7 +393,7 @@ namespace Hotel_Management.ViewModels
             {
                 MessageBox.Show($"Failed to send confirmation email: {ex.Message}", "Email Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
-                // Don't throw - we don't want to interrupt the reservation process if email fails
+                
             }
         }
     }

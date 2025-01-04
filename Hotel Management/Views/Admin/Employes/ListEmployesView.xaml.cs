@@ -24,7 +24,7 @@ namespace Hotel_Management.Views.Admin.Employes
         public ListEmployesView()
         {
             InitializeComponent();
-            this.DataContext = new EmployesManagementViewModel(); // Set the DataContext here
+            this.DataContext = new EmployesManagementViewModel(); 
             
         }
     }

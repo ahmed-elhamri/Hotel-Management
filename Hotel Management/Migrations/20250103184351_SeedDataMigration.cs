@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hotel_Management.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class SeedDataMigration : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(

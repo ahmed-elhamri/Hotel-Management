@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+#pragma warning disable CA1814 
 
 namespace Hotel_Management.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class SeedDataMigrations : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
@@ -453,7 +453,7 @@ namespace Hotel_Management.Migrations
                 column: "RoomTypeId");
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

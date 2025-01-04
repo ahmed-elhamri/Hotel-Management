@@ -19,21 +19,21 @@ namespace Hotel_Management.Services
 
             try
             {
-                // Create the directory if it doesn't exist
+                
                 if (!Directory.Exists(ImageFolderPath))
                 {
                     Directory.CreateDirectory(ImageFolderPath);
                 }
 
-                // Generate unique filename using GUID
+                
                 string extension = Path.GetExtension(sourcePath);
                 string uniqueFileName = $"{Guid.NewGuid()}{extension}";
                 string destinationPath = Path.Combine(ImageFolderPath, uniqueFileName);
 
-                // Copy the file
+                
                 File.Copy(sourcePath, destinationPath, true);
 
-                // Return relative path
+                
                 return Path.Combine("Assets", "RoomImages", uniqueFileName);
             }
             catch (Exception)
@@ -64,7 +64,7 @@ namespace Hotel_Management.Services
             }
             catch
             {
-                // If there's any error, return null and let WPF handle it
+                
                 return null;
             }
         }

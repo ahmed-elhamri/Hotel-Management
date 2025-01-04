@@ -35,7 +35,7 @@ namespace Hotel_Management.Models
         public string Email { get; set; }
 
         [Required]
-        [MinLength(6)] // Assurez-vous d'imposer une longueur minimale sécurisée
+        [MinLength(6)] 
         public string Password { get; set; }
 
         [Required]

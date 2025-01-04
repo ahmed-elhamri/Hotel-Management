@@ -90,7 +90,7 @@ namespace Hotel_Management.ViewModels
             if (string.IsNullOrWhiteSpace(CurrentRoomType.Description))
                 return "La description de la categorie est requis.";
 
-            return null; // No errors
+            return null; 
         }
     }
 }

@@ -88,8 +88,8 @@ namespace Hotel_Management.ViewModels
         {
             CurrentUser = user;
             _tempPassword = user.Id != 0 ? user.Password : null;
-            IsPasswordVisible = user.Id != 0; // Show password field only for existing users
-            CurrentUser.Password = string.Empty; // Clear password field for UI
+            IsPasswordVisible = user.Id != 0; 
+            CurrentUser.Password = string.Empty; 
 
             _currentWindow = new AddUpdateEmployeWindow { DataContext = this };
             _currentWindow.ShowDialog();
@@ -171,17 +171,17 @@ namespace Hotel_Management.ViewModels
 
                 if (isNewUser)
                 {
-                    // Set default password for new user
+                    
                     CurrentUser.Password = BCrypt.Net.BCrypt.HashPassword("DefaultPassword123");
                     CurrentUser.Role = UserRole.Employe;
                     _userDao.AddUser(CurrentUser);
 
-                    // Reload the full list to ensure we have the correct ID
+                    
                     LoadUsers();
                 }
                 else
                 {
-                    // For existing user, only update password if a new one was provided
+                    
                     if (!string.IsNullOrWhiteSpace(CurrentUser.Password))
                     {
                         if (CurrentUser.Password.Length < 6)
@@ -223,7 +223,7 @@ namespace Hotel_Management.ViewModels
 
         private bool IsValidPhone(string phoneNumber)
         {
-            return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 10; // Adjust length if needed
+            return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 10; 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

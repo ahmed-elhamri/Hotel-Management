@@ -63,7 +63,7 @@ namespace Hotel_Management.DAO
                                                       .Where(r => r.Room != null
                                                                   && r.Room.RoomTypeId == rt.Id
                                                                   && r.Status == ReservationStatus.Confirmed)
-                                                      .Sum(r => r.TotalPrice) // Remplacez `TotalPrice` par le champ qui contient le prix total de la réservation
+                                                      .Sum(r => r.TotalPrice) 
                            })
                            .ToDictionary(x => x.RoomTypeName, x => (x.ReservationCount, x.TotalRevenue));
         }
